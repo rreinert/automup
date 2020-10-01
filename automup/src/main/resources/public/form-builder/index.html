@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Form Builder</title>
+    <meta name="description" content="Groovy Web Console">
+	<link rel="stylesheet" href="https://unpkg.com/formiojs@latest/dist/formio.builder.min.css">
+	
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://unpkg.com/formiojs@latest/dist/formio.full.min.css">
+<script src="https://unpkg.com/formiojs@latest/dist/formio.full.min.js"></script>
+	
+  </head>
+  <body>
+    <form>
+		<div id="builder"></div>
+    </form>
+    <script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/form-builder.min.js"></script>
+	<script src="js/form-render.min.js"></script>
+	<script>
+	Formio.builder(document.getElementById('builder'), {}, {
+		  builder: {
+		    basic: false,
+		    advanced: false,
+		    data: false,
+		    customBasic: {
+		      title: 'Basic Components',
+		      default: true,
+		      weight: 0,
+		      components: {
+		        textfield: true,
+		        textarea: true,
+		        email: true,
+		        phoneNumber: true
+		      }
+		    },
+		    custom: {
+		      title: 'User Fields',
+		      weight: 10,
+		      components: {
+		        firstName: {
+		          title: 'First Name',
+		          key: 'firstName',
+		          icon: 'terminal',
+		          schema: {
+		            label: 'First Name',
+		            type: 'textfield',
+		            key: 'firstName',
+		            input: true
+		          }
+		        },
+		        lastName: {
+		          title: 'Last Name',
+		          key: 'lastName',
+		          icon: 'terminal',
+		          schema: {
+		            label: 'Last Name',
+		            type: 'textfield',
+		            key: 'lastName',
+		            input: true
+		          }
+		        },
+		        email: {
+		          title: 'Email',
+		          key: 'email',
+		          icon: 'at',
+		          schema: {
+		            label: 'Email',
+		            type: 'email',
+		            key: 'email',
+		            input: true
+		          }
+		        },
+		        phoneNumber: {
+		          title: 'Mobile Phone',
+		          key: 'mobilePhone',
+		          icon: 'phone-square',
+		          schema: {
+		            label: 'Mobile Phone',
+		            type: 'phoneNumber',
+		            key: 'mobilePhone',
+		            input: true
+		          }
+		        }
+		      }
+		    },
+		    layout: {
+		      components: {
+		        table: false
+		      }
+		    }
+		  },
+		  editForm: {
+		    textfield: [
+		      {
+		        key: 'api',
+		        ignore: true
+		      }        
+		    ]
+		  }
+		}).then(function(builder) {
+		  builder.on('saveComponent', function() {
+		    console.log(builder.schema);
+		  });
+		});
+	</script>
+	
+  </body>
+</html>
