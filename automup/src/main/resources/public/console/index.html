@@ -1,41 +1,42 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Web Console</title>
-    <meta name="description" content="Groovy Web Console">
-    <link rel="stylesheet" href="css/console.css">
-    <link rel="stylesheet" href="css/codemirror.css">
-    <link rel="stylesheet" href="css/ambiance.css">
-  </head>
-  <body>
-    <form>
-      <div class="input-code-title">
-        <img src="images/console.png" />
-        <span class="title">Edit code</span>
-        <button id="send-button" type="button">&#9654; Execute</button>
-        <button id="permalink-button" type="button">&#128279; Permalink</button>
-        <span class="pulled-right">
-          <label for="input-code-example-select">Example:</label>
-          <select id="input-code-example-select">
-            <option value="" selected="selected">---</option>
-            <option value="/console/examples/get-environment-info.groovy">Get environment info</option>
-            <option value="/console/examples/list-spring-beans.groovy">List all spring beans</option>
-            <option value="/console/examples/is-it-friday.groovy">Is it friday?</option>
-          </select>
-        </span>
-      </div>
-      <textarea id="input-code" name="input-code"></textarea>
-      <div class="result-code-title"><span class="title">Result</span></div>
-      <textarea id="result-code" name="result-code"></textarea>
-    </form>
-    <script src="js/codemirror.js"></script>
-    <script src="js/matchbrackets.js"></script>
-    <script src="js/groovy.js"></script>
-    <script src="js/javascript.js"></script>
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/jquery.blockui.js"></script>
-    <script src="js/lz-string.js"></script>
-    <script src="js/console.js"></script>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Editor</title>
+  <style type="text/css" media="screen">
+    body {
+        overflow: hidden;
+    }
+
+    #editor {
+        margin: 0;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+  </style>
+</head>
+<body>
+
+<pre id="editor">function foo(items) {
+    var i;
+    for (i = 0; i &lt; items.length; i++) {
+        alert("Ace Rocks " + items[i]);
+    }
+}</pre>
+
+<script src="js/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/theme-eclipse.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/eclipse");
+    editor.session.setMode("ace/mode/javascript");
+</script>
+
+</body>
 </html>
