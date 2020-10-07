@@ -5,38 +5,62 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Editor</title>
   <style type="text/css" media="screen">
-    body {
-        overflow: hidden;
-    }
 
-    #editor {
-        margin: 0;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
+/*     #editor { */
+/*         position: absolute; */
+/*         top: 0; */
+/*         bottom: 0; */
+/*         left: 0; */
+/*         right: 0; */
+/*     } */
   </style>
+  
+    <link rel="stylesheet" href="css/console.css">  
+  
 </head>
 <body>
+<div class="input-code-title">
+  <button id="send-button" type="button">&#9654; Run</button>
+</div>
+<div id="editor" style="height: 400px">
+var x = 4;
+x = x + 1;
 
-<pre id="editor">function foo(items) {
-    var i;
-    for (i = 0; i &lt; items.length; i++) {
-        alert("Ace Rocks " + items[i]);
-    }
-}</pre>
+print('Result= '+x);</div>
+<div class="result-code-title"><span class="title">Result</span></div>
+
+<div id="result" style="height: 200px"></div>
 
 <script src="js/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/theme-eclipse.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/jquery.blockui.js"></script>
 
 <script>
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/eclipse");
     editor.session.setMode("ace/mode/javascript");
-</script>
+
+    var result = ace.edit("result");
+    result.setTheme("ace/theme/eclipse");
+
+    $("#send-button").on("click", function() {
+        $.blockUI();
+        $.ajax({
+          url: "/console/javascript",
+          type: "POST",
+          data: { script: editor.getValue() }
+        }).done(function(data) {
+        	result.setValue(JSON.stringify(data, null, 2));
+        }).fail(function() {
+        	result.setValue("Failed to send request.");
+        }).always(function() {
+          $.unblockUI();
+        });
+      });
+    
+    </script>
 
 </body>
 </html>

@@ -13,6 +13,8 @@ import java.util.stream.Stream;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
 import org.codehaus.groovy.control.customizers.SecureASTCustomizer;
+import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.Value;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -43,27 +45,37 @@ public class ConsoleController implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
-    /**
-     * Redirects to groovy console index page.
-     *
-     * @return the redirect view of groovy console index page
-     */
     @RequestMapping(method = RequestMethod.GET)
     public String index() {
         return "redirect:/console/index.html";
     }
 
-    /**
-     * Executes the given groovy script
-     *
-     * @param script the groovy script
-     * @return the result object
-     */
+    @RequestMapping(value = "/javascript", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public CompletableFuture<ScriptResult> executeJavascript(@RequestParam String script) {
+
+    	return CompletableFuture.supplyAsync(() -> {
+    		
+    		PrintStream previousConsole = System.out;
+    		
+            ByteArrayOutputStream newConsole = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(newConsole));
+    		
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            Context jsContext = Context.create("js");
+            runJavaScript(script, jsContext);
+            
+            System.setOut(previousConsole);
+            
+            return ScriptResult.create(newConsole.toString(), out.toString());
+        }).exceptionally(ScriptResult::create);
+    }
+    
     @RequestMapping(value = "/groovy", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public CompletableFuture<ScriptResult> execute(@RequestParam String script) {
+    public CompletableFuture<ScriptResult> executeGroovy(@RequestParam String script) {
 
-    	
     	return CompletableFuture.supplyAsync(() -> {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             GroovyShell groovyShell = createGroovyShell(out);
@@ -75,6 +87,10 @@ public class ConsoleController implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+    }
+    
+    private static Value runJavaScript(String script, Context context) {
+	  return context.eval("js", script);
     }
 
     private GroovyShell createGroovyShell(OutputStream outputStream) {
@@ -128,16 +144,7 @@ public class ConsoleController implements ApplicationContextAware {
                 scriptletResult.output = output.split(System.lineSeparator());
             }
             
-//          Context jsContext = Context.create("js");
-//          runScript("console.log('Hello from the project')", jsContext);
-
-            
             return scriptletResult;
         }
-        
-//      private static Value runScript(String script, Context context) {
-//    	  return context.eval("js", script);
-//      }
-
     }
 }
