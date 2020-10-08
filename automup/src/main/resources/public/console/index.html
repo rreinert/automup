@@ -23,10 +23,16 @@
   <button id="send-button" type="button">&#9654; Run</button>
 </div>
 <div id="editor" style="height: 400px">
-var x = 4;
-x = x + 1;
 
-print('Result= '+x);</div>
+var Integer = Java.type("java.lang.Integer");
+
+database.update("INSERT INTO cars VALUES (?)", "ABC1234");
+database.update("INSERT INTO cars VALUES (?)", "XYZ9876");
+
+var qtd = database.queryForObject("SELECT COUNT(*) FROM cars", Integer.class);
+
+print('Cars found = '+qtd);</div>
+
 <div class="result-code-title"><span class="title">Result</span></div>
 
 <div id="result" style="height: 200px"></div>
