@@ -36,9 +36,15 @@
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
 	    
+<!-- 		<dependency> -->
+<!-- 			<groupId>mysql</groupId> -->
+<!-- 			<artifactId>mysql-connector-java</artifactId> -->
+<!-- 		</dependency> -->
+		
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+<!-- 			<version>42.2.6</version> -->
 		</dependency>
 
         <dependency>
