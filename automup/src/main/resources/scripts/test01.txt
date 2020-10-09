@@ -1,0 +1,16 @@
+var Integer = Java.type("java.lang.Integer");
+
+database.update("DELETE FROM cars");
+database.update("INSERT INTO cars VALUES (?)", "ABC1234");
+database.update("INSERT INTO cars VALUES (?)", "XYZ9876");
+
+var qtd = database.queryForObject("SELECT COUNT(*) FROM cars", Integer.class);
+print('Cars found = '+qtd);
+
+var cars = database.queryForList("SELECT * FROM cars");
+print(cars.size());
+
+for (var x =0; x < cars.size(); x++){
+    var car = cars[x];
+    print('Car = '+car);
+}

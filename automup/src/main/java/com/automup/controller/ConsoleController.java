@@ -82,6 +82,8 @@ public class ConsoleController implements ApplicationContextAware {
             Context context = Context.newBuilder().allowAllAccess(true).build();
             
             context.getBindings("js").putMember("database", jdbcTemplate);
+            
+            runJavaScript("function add(num){return num +20;}", context);
             runJavaScript(script, context);
             
             System.setOut(previousConsole);

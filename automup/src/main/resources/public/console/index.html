@@ -4,36 +4,36 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Editor</title>
-  <style type="text/css" media="screen">
-
-/*     #editor { */
-/*         position: absolute; */
-/*         top: 0; */
-/*         bottom: 0; */
-/*         left: 0; */
-/*         right: 0; */
-/*     } */
-  </style>
-  
-    <link rel="stylesheet" href="css/console.css">  
-  
+  <link rel="stylesheet" href="css/console.css">  
 </head>
 <body>
 <div class="input-code-title">
   <button id="save-button" type="button">&#9654; Save</button>
   <button id="run-button" type="button">&#9654; Run</button>
-
 </div>
 <div id="editor" style="height: 400px">
 
 var Integer = Java.type("java.lang.Integer");
 
+database.update("DELETE FROM cars");
 database.update("INSERT INTO cars VALUES (?)", "ABC1234");
 database.update("INSERT INTO cars VALUES (?)", "XYZ9876");
 
 var qtd = database.queryForObject("SELECT COUNT(*) FROM cars", Integer.class);
+print('Cars found = '+qtd);
 
-print('Cars found = '+qtd);</div>
+qtd = add(qtd);
+print('Cars add = '+qtd);
+
+var cars = database.queryForList("SELECT * FROM cars");
+print(cars.size());
+
+for (var x =0; x < cars.size(); x++){
+    var car = cars[x];
+    print('Car = '+car);
+}
+
+</div>
 
 <div class="result-code-title"><span class="title">Console</span></div>
 
