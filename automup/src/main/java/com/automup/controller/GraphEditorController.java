@@ -34,7 +34,6 @@ import com.automup.util.mxBase64;
 public class GraphEditorController {
 
 	private static final Logger log = Logger.getLogger(GraphEditorController.class.getName());
-
 	
 	@RequestMapping(value = "/open", method = { RequestMethod.GET, RequestMethod.POST })
 	public void open(HttpServletRequest request, HttpServletResponse response) throws Exception {

@@ -20,7 +20,9 @@
 </head>
 <body>
 <div class="input-code-title">
-  <button id="send-button" type="button">&#9654; Run</button>
+  <button id="save-button" type="button">&#9654; Save</button>
+  <button id="run-button" type="button">&#9654; Run</button>
+
 </div>
 <div id="editor" style="height: 400px">
 
@@ -33,7 +35,7 @@ var qtd = database.queryForObject("SELECT COUNT(*) FROM cars", Integer.class);
 
 print('Cars found = '+qtd);</div>
 
-<div class="result-code-title"><span class="title">Result</span></div>
+<div class="result-code-title"><span class="title">Console</span></div>
 
 <div id="result" style="height: 200px"></div>
 
@@ -51,16 +53,31 @@ print('Cars found = '+qtd);</div>
     var result = ace.edit("result");
     result.setTheme("ace/theme/eclipse");
 
-    $("#send-button").on("click", function() {
+    $("#save-button").on("click", function() {
         $.blockUI();
         $.ajax({
-          url: "/console/javascript",
+          url: "/console/save",
           type: "POST",
           data: { script: editor.getValue() }
         }).done(function(data) {
         	result.setValue(JSON.stringify(data, null, 2));
         }).fail(function() {
-        	result.setValue("Failed to send request.");
+        	result.setValue("Failed to save script.");
+        }).always(function() {
+          $.unblockUI();
+        });
+      });
+    
+    $("#run-button").on("click", function() {
+        $.blockUI();
+        $.ajax({
+          url: "/console/run",
+          type: "POST",
+          data: { script: editor.getValue() }
+        }).done(function(data) {
+        	result.setValue(JSON.stringify(data, null, 2));
+        }).fail(function() {
+        	result.setValue("Failed to run script.");
         }).always(function() {
           $.unblockUI();
         });

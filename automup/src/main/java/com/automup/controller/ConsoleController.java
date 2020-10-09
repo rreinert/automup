@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.automup.entity.Script;
+import com.automup.repository.ScriptRepository;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -30,6 +32,9 @@ public class ConsoleController implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 
     @Autowired
+    private ScriptRepository scriptRepository;
+    
+    @Autowired
     private JdbcTemplate jdbcTemplate;
     
     @RequestMapping(method = RequestMethod.GET)
@@ -37,9 +42,33 @@ public class ConsoleController implements ApplicationContextAware {
         return "redirect:/console/index.html";
     }
 
-    @RequestMapping(value = "/javascript", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/save", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public CompletableFuture<ScriptResult> executeJavascript(@RequestParam String script) {
+    public CompletableFuture<ScriptResult> save(@RequestParam String script) {
+
+    	return CompletableFuture.supplyAsync(() -> {
+    		
+    		PrintStream previousConsole = System.out;
+    		
+            ByteArrayOutputStream newConsole = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(newConsole));
+    		
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            Script s = new Script();
+            s.setCode(script);
+            s.setName("test");
+            scriptRepository.save(s);
+            
+            System.setOut(previousConsole);
+            
+            return ScriptResult.create(newConsole.toString(), out.toString());
+        }).exceptionally(ScriptResult::create);
+    }
+    
+    @RequestMapping(value = "/run", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public CompletableFuture<ScriptResult> run(@RequestParam String script) {
 
     	return CompletableFuture.supplyAsync(() -> {
     		
