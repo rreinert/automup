@@ -7,37 +7,19 @@
   <link rel="stylesheet" href="css/console.css">  
 </head>
 <body>
+
 <div class="input-code-title">
+  <button id="open-button" type="button">&#9654; Open</button>
   <button id="save-button" type="button">&#9654; Save</button>
   <button id="run-button" type="button">&#9654; Run</button>
 </div>
-<div id="editor" style="height: 400px">
-
-var Integer = Java.type("java.lang.Integer");
-
-database.update("DELETE FROM cars");
-database.update("INSERT INTO cars VALUES (?)", "ABC1234");
-database.update("INSERT INTO cars VALUES (?)", "XYZ9876");
-
-var qtd = database.queryForObject("SELECT COUNT(*) FROM cars", Integer.class);
-print('Cars found = '+qtd);
-
-qtd = add(qtd);
-print('Cars add = '+qtd);
-
-var cars = database.queryForList("SELECT * FROM cars");
-print(cars.size());
-
-for (var x =0; x < cars.size(); x++){
-    var car = cars[x];
-    print('Car = '+car);
-}
-
-</div>
+<div id="editor" style="height: 400px"></div>
 
 <div class="result-code-title"><span class="title">Console</span></div>
 
 <div id="result" style="height: 200px"></div>
+
+<input type="hidden" id="scriptId" value="2"/>
 
 <script src="js/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
@@ -52,7 +34,27 @@ for (var x =0; x < cars.size(); x++){
 
     var result = ace.edit("result");
     result.setTheme("ace/theme/eclipse");
-
+    
+    $("#open-button").on("click", function() {
+    	
+    	var scriptId = $('#scriptId').val();
+    	
+        $.blockUI();
+        $.ajax({
+          url: "/console/open",
+          type: "POST",
+          data: { id: scriptId }
+        }).done(function(data) {
+        	
+        	editor.setValue(data, 1)
+        	
+        }).fail(function() {
+        	result.setValue("Failed to open script.");
+        }).always(function() {
+          $.unblockUI();
+        });
+    });
+    
     $("#save-button").on("click", function() {
         $.blockUI();
         $.ajax({
@@ -66,7 +68,7 @@ for (var x =0; x < cars.size(); x++){
         }).always(function() {
           $.unblockUI();
         });
-      });
+    });
     
     $("#run-button").on("click", function() {
         $.blockUI();

@@ -2,6 +2,7 @@ package com.automup.controller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import org.graalvm.polyglot.Context;
@@ -41,6 +42,35 @@ public class ConsoleController implements ApplicationContextAware {
     public String index() {
         return "redirect:/console/index.html";
     }
+    
+    @RequestMapping(value = "/open", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public CompletableFuture<ScriptResult> open(@RequestParam Long id) {
+
+    	return CompletableFuture.supplyAsync(() -> {
+    		
+    		PrintStream previousConsole = System.out;
+    		
+            ByteArrayOutputStream newConsole = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(newConsole));
+    		
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            Optional<Script> scriptFound = scriptRepository.findById(id);
+            
+            String code = "";
+
+            if (scriptFound != null) {
+            	Script script = scriptFound.get();
+            	code = script.getCode();
+            }
+            
+            System.setOut(previousConsole);
+            
+            return ScriptResult.create(code, out.toString());
+        }).exceptionally(ScriptResult::create);
+    }
+
 
     @RequestMapping(value = "/save", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
