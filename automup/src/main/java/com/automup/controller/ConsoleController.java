@@ -45,7 +45,7 @@ public class ConsoleController implements ApplicationContextAware {
     
     @RequestMapping(value = "/open", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public CompletableFuture<ScriptResult> open(@RequestParam Long id) {
+    public CompletableFuture<ScriptResult> open(@RequestParam String id) {
 
     	return CompletableFuture.supplyAsync(() -> {
     		
@@ -56,7 +56,9 @@ public class ConsoleController implements ApplicationContextAware {
     		
             ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-            Optional<Script> scriptFound = scriptRepository.findById(id);
+            Long scriptId = Long.valueOf(id);
+            
+            Optional<Script> scriptFound = scriptRepository.findById(scriptId);
             
             String code = "";
 
