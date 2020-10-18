@@ -237,7 +237,7 @@ to get the desired effect
 
 	        <div class="col-lg-12">
 			    <form>
-					<div id="builder"></div>
+					<div id="render"></div>
 			    </form>
 	        </div>
         
@@ -285,131 +285,33 @@ to get the desired effect
 	<script src="js/form-builder.min.js"></script>
 	<script src="js/form-render.min.js"></script>
 	<script>
-	
-	Formio.builder(document.getElementById('builder'), {}, {
-		  builder: {
-// 		    basic: false,
-// 		    advanced: false,
-// 		    data: false,
-		    customBasic: {
-		      title: 'Basic Components',
-		      default: true,
-		      weight: 0,
-		      components: {
-		        textfield: true,
-		        textarea: true,
-		        email: true,
-		        phoneNumber: true
-		      }
-		    },
-		    custom: {
-		      title: 'User Fields',
-		      weight: 10,
-		      components: {
-		        firstName: {
-		          title: 'First Name',
-		          key: 'firstName',
-		          icon: 'terminal',
-		          schema: {
-		            label: 'First Name',
-		            type: 'textfield',
-		            key: 'firstName',
-		            input: true
-		          }
-		        },
-		        lastName: {
-		          title: 'Last Name',
-		          key: 'lastName',
-		          icon: 'terminal',
-		          schema: {
-		            label: 'Last Name',
-		            type: 'textfield',
-		            key: 'lastName',
-		            input: true
-		          }
-		        },
-		        email: {
-		          title: 'Email',
-		          key: 'email',
-		          icon: 'at',
-		          schema: {
-		            label: 'Email',
-		            type: 'email',
-		            key: 'email',
-		            input: true
-		          }
-		        },
-		        phoneNumber: {
-		          title: 'Mobile Phone',
-		          key: 'mobilePhone',
-		          icon: 'phone-square',
-		          schema: {
-		            label: 'Mobile Phone',
-		            type: 'phoneNumber',
-		            key: 'mobilePhone',
-		            input: true
-		          }
-		        }
-		      }
-		    },
-		    layout: {
-		      components: {
-		        table: false
-		      }
-		    }
-		  },
-		  editForm: {
-		    textfield: [
-		      {
-		        key: 'api',
-		        ignore: true
-		      }        
-		    ]
-		  }
-		}).then(function(builder) {
-		  builder.on('saveComponent', function() {
-		    console.log(builder.schema);
-		  
-		    var content = JSON.stringify(builder.schema);
-		    var name = 'teste1';
-		    var id = null;
-		    
-			$.getJSON('http://localhost:8080/form/save', {
-				ajax : 'true',
-				id: id,
-				name: name,
-				content: content
-			}, function(result) {
-				console.log(result);
-			})
-			.fail(function() {
-			});		
 
-		  
-		  });
-		  
-		});
+    var id = '7';
+    var content = '';
+    
+	$.getJSON('http://localhost:8080/form/open', {
+		ajax : 'true',
+		id: id
+	}, function(result) {
+		content = result;
+
+		Formio.createForm(document.getElementById('render'), content).then(function(form) {
+			  
+			  // Register for the submit event to get the completed submission.
+			  form.on('submit', function(submission) {
+			    console.log('Submission was made!', submission);
+			  });
+			  
+			  // Everytime the form changes, this will fire.
+			  form.on('change', function(changed) {
+			    console.log('Form was changed', changed);
+			  });
+			});
+
 	
-	
-// 	Formio.createForm(document.getElementById('formio'), 'https://examples.form.io/example').then(function(form) {
-// 		  // Defaults are provided as follows.
-// 		  form.submission = {
-// 		    data: {
-// 		      firstName: 'Joe',
-// 		      lastName: 'Smith'
-// 		    }
-// 		  };
-		  
-// 		  // Register for the submit event to get the completed submission.
-// 		  form.on('submit', function(submission) {
-// 		    console.log('Submission was made!', submission);
-// 		  });
-		  
-// 		  // Everytime the form changes, this will fire.
-// 		  form.on('change', function(changed) {
-// 		    console.log('Form was changed', changed);
-// 		  });
-// 		});
+	})
+	.fail(function() {
+	});		
 	
 	</script>
 
