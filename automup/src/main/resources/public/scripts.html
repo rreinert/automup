@@ -70,31 +70,53 @@ to get the desired effect
   <!-- /.control-sidebar -->
 
   <div id="footer"></div>
+  
+
+<div id="colaboradorPopup" class="modal fade" tabindex="-1" style="display: none;">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+	        </button>
+	        <h4 class="modal-title translate-weg" id="myModalLabel">SELECIONAR_COLABORADOR</h4>
+	      </div>
+	      <div class="modal-body">
+				<div>
+					<label class="control-label col-md-2 col-sm-3 col-xs-12 translate-weg" for="company">COLABORADOR</label>
+					<input type="text" id="BusCol" class="col-md-9 adjust-field-mobile" />
+					<span class="icon-loader" id="loaderColaboradorDatatable" hidden>
+						  <i class="loaderField"></i>
+					</span>	
+				</div>
+				<div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer" >
+				
+					<table id="datatable-colaboradores" class="table table-striped table-bordered" >
+					<thead class="thead">
+					  <tr>
+						<th style="width: 5%"  class="translate-weg">EMPRESA</th>
+						<th style="width: 5%"  class="translate-weg">TIPO</th>
+						<th style="width: 10%" class="translate-weg">CADASTRO</th>
+						<th style="width: 40%" class="translate-weg">NOME</th>
+						<th style="width: 40%" class="translate-weg">LOCAL</th>
+					  </tr>
+					</thead>
+					</table>
+				</div> 
+	      </div>
+
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-dark translate-weg" data-dismiss="modal">FECHAR</button>
+	      </div>
+	
+	    </div>
+	  </div>      
+  </div>
+
+
 
 </div>
 <!-- ./wrapper -->
-
-<div class="modal fade" id="modal-open" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Default Modal</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>One fine body…</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-</div>
 
 <!-- REQUIRED SCRIPTS -->
 
@@ -106,15 +128,12 @@ to get the desired effect
 <script src="js/adminlte.js"></script>
 
 <!-- OPTIONAL SCRIPTS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
 <script src="js/demo.js"></script>
 <script src="js/pages/dashboard3.js"></script>
 
 <script src="js/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/theme-eclipse.js" type="text/javascript" charset="utf-8"></script>
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="js/jquery.blockui.js"></script>
 
 <script>
 	$(document).ready(function (e) {
@@ -133,7 +152,7 @@ to get the desired effect
     result.setTheme("ace/theme/eclipse");
     
     $("#open-button").on("click", function() {
-    	$('#modal-open').modal('show');
+    	$('#colaboradorPopup').modal('show');
     });
     
     $("#save-button").on("click", function() {
