@@ -2,6 +2,8 @@ package com.automup.controller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -43,6 +45,23 @@ public class ConsoleController implements ApplicationContextAware {
         return "redirect:/console/index.html";
     }
     
+    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public CompletableFuture<ScriptResult> list() {
+
+    	return CompletableFuture.supplyAsync(() -> {
+    		
+    		List<Script> ret = new ArrayList<Script>();
+            Iterable<Script> scripts = scriptRepository.findAll();
+            for (Script script : scripts) {
+				script.setName("<a href='#' onclick='selectScript("+script.getId()+");'>"+script.getName()+"</a>");
+            	ret.add(script);
+			}
+            
+            return ScriptResult.create(ret, "");
+        }).exceptionally(ScriptResult::create);
+    }
+    
     @RequestMapping(value = "/open", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public CompletableFuture<ScriptResult> open(@RequestParam String id) {
@@ -76,7 +95,7 @@ public class ConsoleController implements ApplicationContextAware {
 
     @RequestMapping(value = "/save", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public CompletableFuture<ScriptResult> save(@RequestParam String script) {
+    public CompletableFuture<ScriptResult> save(@RequestParam String script, @RequestParam String id) {
 
     	return CompletableFuture.supplyAsync(() -> {
     		
@@ -87,9 +106,21 @@ public class ConsoleController implements ApplicationContextAware {
     		
             ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-            Script s = new Script();
+            Long scriptId = Long.valueOf(id);
+            
+            Optional<Script> scriptFound = scriptRepository.findById(scriptId);
+            
+            Script s = null;
+            if (scriptFound != null) {
+            	s = scriptFound.get();
+            }
+            
+            if (s == null) {
+            	s = new Script();
+                s.setName("test");
+            }
+
             s.setCode(script);
-            s.setName("test");
             scriptRepository.save(s);
             
             System.setOut(previousConsole);
