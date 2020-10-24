@@ -91,11 +91,10 @@ public class ConsoleController implements ApplicationContextAware {
             return ScriptResult.create(code, out.toString());
         }).exceptionally(ScriptResult::create);
     }
-
-
+    
     @RequestMapping(value = "/save", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public CompletableFuture<ScriptResult> save(@RequestParam String script, @RequestParam String id) {
+    public CompletableFuture<ScriptResult> save(@RequestParam String script, @RequestParam String id, @RequestParam String name) {
 
     	return CompletableFuture.supplyAsync(() -> {
     		
@@ -105,27 +104,26 @@ public class ConsoleController implements ApplicationContextAware {
             System.setOut(new PrintStream(newConsole));
     		
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-            Long scriptId = Long.valueOf(id);
-            
-            Optional<Script> scriptFound = scriptRepository.findById(scriptId);
-            
             Script s = null;
-            if (scriptFound != null) {
-            	s = scriptFound.get();
+
+            if (StringUtils.isEmpty(id)) {
+                s = new Script();
+                s.setName(name);
+            }else {
+                Long scriptId = Long.valueOf(id);
+                Optional<Script> scriptFound = scriptRepository.findById(scriptId);
+                
+                if (scriptFound != null) {
+                	s = scriptFound.get();
+                }
             }
             
-            if (s == null) {
-            	s = new Script();
-                s.setName("test");
-            }
-
             s.setCode(script);
-            scriptRepository.save(s);
+            Script ret = scriptRepository.save(s);
             
             System.setOut(previousConsole);
             
-            return ScriptResult.create(newConsole.toString(), out.toString());
+            return ScriptResult.create(ret.getId(), out.toString());
         }).exceptionally(ScriptResult::create);
     }
     

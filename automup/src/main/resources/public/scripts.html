@@ -48,6 +48,8 @@
 				<div id="result" style="height: 200px"></div>
 				
 				<input type="hidden" id="scriptId"/>
+				<input type="hidden" id="scriptName"/>
+				
 	        </div>  
         </div>
         <!-- /.row -->
@@ -101,8 +103,30 @@
 	    </div>
 	  </div>      
   </div>
+  
+<div id="newPopup" class="modal fade" tabindex="-1" style="display: none;">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+	        </button>
+	        <h4 class="modal-title" id="myModalLabel">Novo Script</h4>
+	      </div>
+	      <div class="modal-body">
+				<div>
+					<label class="col-form-label col-md-2 col-sm-3 col-xs-12 " for="company">Nome</label>
+					<input type="text" id="newScriptName" class="col-md-9 adjust-field-mobile" />
+				</div>
+	      </div>
 
-
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" onclick="addNewScript();">OK</button>
+	      </div>
+	
+	    </div>
+	  </div>      
+  </div>  
 
 </div>
 <!-- ./wrapper -->
@@ -149,6 +173,8 @@
     $("#new-button").on("click", function() {
     	$('#scriptId').val('');
     	editor.setValue('', 1);
+    	
+    	$('#newPopup').modal('show');
     });
     
     $("#open-button").on("click", function() {
@@ -172,15 +198,18 @@
     
     $("#save-button").on("click", function() {
     	var scriptId = $('#scriptId').val();
-        $.blockUI();
+    	var scriptName = $('#scriptName').val();
+
+    	$.blockUI();
         $.ajax({
           url: "/console/save",
           type: "POST",
           data: { script: editor.getValue(),
-        	  id: scriptId  
+        	  id: scriptId,
+        	  name: scriptName
           }
         }).done(function(data) {
-        	result.setValue(JSON.stringify(data, null, 2));
+        	$('#scriptId').val(data.result);
         }).fail(function() {
         	result.setValue("Failed to save script.");
         }).always(function() {
@@ -245,6 +274,13 @@
     	$('#openPopup').modal('hide');
     	
     	openScript(id);
+    }
+    
+    function addNewScript(){
+    	$('#newPopup').modal('hide');
+
+    	var newScriptName = $('#newScriptName').val();
+    	$('#scriptName').val(newScriptName);
     }
     
     </script>
