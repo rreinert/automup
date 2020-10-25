@@ -58,8 +58,8 @@ to get the desired effect
 
 			    <form>
     				<input type="hidden" id="formId" value="1"/>
-			    
 					<div id="builder"></div>
+					<div id="render"></div>
 			    </form>
 	        </div>
         
@@ -216,25 +216,25 @@ to get the desired effect
 		});
 	
 	
-// 	Formio.createForm(document.getElementById('formio'), 'https://examples.form.io/example').then(function(form) {
-// 		  // Defaults are provided as follows.
-// 		  form.submission = {
-// 		    data: {
-// 		      firstName: 'Joe',
-// 		      lastName: 'Smith'
-// 		    }
-// 		  };
+	Formio.createForm(document.getElementById('render'), 'http://localhost:8080/form/open?id=3').then(function(form) {
+		  // Defaults are provided as follows.
+		  form.submission = {
+		    data: {
+		      firstName: 'Joe',
+		      lastName: 'Smith'
+		    }
+		  };
 		  
-// 		  // Register for the submit event to get the completed submission.
-// 		  form.on('submit', function(submission) {
-// 		    console.log('Submission was made!', submission);
-// 		  });
+		  // Register for the submit event to get the completed submission.
+		  form.on('submit', function(submission) {
+		    console.log('Submission was made!', submission);
+		  });
 		  
-// 		  // Everytime the form changes, this will fire.
-// 		  form.on('change', function(changed) {
-// 		    console.log('Form was changed', changed);
-// 		  });
-// 		});
+		  // Everytime the form changes, this will fire.
+		  form.on('change', function(changed) {
+		    console.log('Form was changed', changed);
+		  });
+		});
 
 	</script>
 

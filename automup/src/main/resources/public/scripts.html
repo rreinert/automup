@@ -40,6 +40,7 @@
 				  <button id="new-button" type="button"> <i class="nav-icon fas fa-file"></i> New</button>
 				  <button id="open-button" type="button"> <i class="nav-icon fas fa-folder-open"></i> Open</button>
 				  <button id="save-button" type="button"> <i class="nav-icon fas fa-save"></i> Save</button>
+				  <button id="delete-button" type="button"> <i class="nav-icon fas fa-trash"></i> Delete</button>
 				  <button id="run-button" type="button"> <i class="nav-icon fas fa-play"></i> Run</button>
 				</div>
 				<div id="editor" style="height: 400px"></div>
@@ -104,24 +105,24 @@
 	  </div>      
   </div>
   
-<div id="newPopup" class="modal fade" tabindex="-1" style="display: none;">
+  <div id="savePopup" class="modal fade" tabindex="-1" style="display: none;">
 	  <div class="modal-dialog modal-lg">
 	    <div class="modal-content">
 	
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
 	        </button>
-	        <h4 class="modal-title" id="myModalLabel">Novo Script</h4>
+	        <h4 class="modal-title" id="myModalLabel">Salvar Script</h4>
 	      </div>
 	      <div class="modal-body">
 				<div>
-					<label class="col-form-label col-md-2 col-sm-3 col-xs-12 " for="company">Nome</label>
+					<label class="col-form-label col-md-2 col-sm-3 col-xs-12 " for="company">Nome:</label>
 					<input type="text" id="newScriptName" class="col-md-9 adjust-field-mobile" />
 				</div>
 	      </div>
 
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" onclick="addNewScript();">OK</button>
+	        <button type="button" class="btn btn-default" onclick="setNameAndSaveScript();">OK</button>
 	      </div>
 	
 	    </div>
@@ -172,9 +173,8 @@
 
     $("#new-button").on("click", function() {
     	$('#scriptId').val('');
+    	$('#scriptName').val('');
     	editor.setValue('', 1);
-    	
-    	$('#newPopup').modal('show');
     });
     
     $("#open-button").on("click", function() {
@@ -198,23 +198,12 @@
     
     $("#save-button").on("click", function() {
     	var scriptId = $('#scriptId').val();
-    	var scriptName = $('#scriptName').val();
 
-    	$.blockUI();
-        $.ajax({
-          url: "/console/save",
-          type: "POST",
-          data: { script: editor.getValue(),
-        	  id: scriptId,
-        	  name: scriptName
-          }
-        }).done(function(data) {
-        	$('#scriptId').val(data.result);
-        }).fail(function() {
-        	result.setValue("Failed to save script.");
-        }).always(function() {
-          $.unblockUI();
-        });
+    	if (scriptId == ""){
+        	$('#savePopup').modal('show');
+    	}else{
+    		saveScript();
+    	}
     });
     
     $("#run-button").on("click", function() {
@@ -270,17 +259,36 @@
     }
     
     function selectScript(id){
-
     	$('#openPopup').modal('hide');
-    	
     	openScript(id);
     }
     
-    function addNewScript(){
-    	$('#newPopup').modal('hide');
-
-    	var newScriptName = $('#newScriptName').val();
-    	$('#scriptName').val(newScriptName);
+    function setNameAndSaveScript(){
+    	var newName = $('#newScriptName').val();
+    	$('#scriptName').val(newName);
+    	$('#savePopup').modal('hide');
+    	saveScript();
+    }
+    
+    function saveScript(){
+    	var scriptId = $('#scriptId').val();
+    	var scriptName = $('#scriptName').val();
+    	
+    	$.blockUI();
+        $.ajax({
+          url: "/console/save",
+          type: "POST",
+          data: { script: editor.getValue(),
+        	  id: scriptId,
+        	  name: scriptName
+          }
+        }).done(function(data) {
+        	$('#scriptId').val(data.result);
+        }).fail(function() {
+        	result.setValue("Failed to save script.");
+        }).always(function() {
+          $.unblockUI();
+        });
     }
     
     </script>
