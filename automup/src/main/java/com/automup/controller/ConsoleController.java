@@ -126,7 +126,29 @@ public class ConsoleController implements ApplicationContextAware {
             return ScriptResult.create(ret.getId(), out.toString());
         }).exceptionally(ScriptResult::create);
     }
-    
+
+    @RequestMapping(value = "/delete", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public CompletableFuture<ScriptResult> delete(@RequestParam String id) {
+
+    	return CompletableFuture.supplyAsync(() -> {
+    		
+    		PrintStream previousConsole = System.out;
+    		
+            ByteArrayOutputStream newConsole = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(newConsole));
+    		
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            Long scriptId = Long.valueOf(id);
+            scriptRepository.deleteById(scriptId);
+            
+            System.setOut(previousConsole);
+            
+            return ScriptResult.create("", out.toString());
+        }).exceptionally(ScriptResult::create);
+    }
+
     @RequestMapping(value = "/run", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public CompletableFuture<ScriptResult> run(@RequestParam String script) {

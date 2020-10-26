@@ -14,6 +14,8 @@
   
   <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <!--   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css"> -->
+
+  <link rel="stylesheet" href="plugins/jquery-confirm/jquery-confirm.min.css">
   
   <!-- Theme style --> 
   <link rel="stylesheet" href="css/adminlte.min.css">
@@ -144,6 +146,8 @@
 <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
+<script src="plugins/jquery-confirm/jquery-confirm.min.js"></script>
+
 <!-- AdminLTE -->
 <script src="js/adminlte.js"></script>
 
@@ -205,7 +209,25 @@
     		saveScript();
     	}
     });
-    
+
+    $("#delete-button").on("click", function() {
+   		$.confirm({
+   		    title: 'Atenção',
+   		    icon: 'fa fa-warning',
+   		    theme: 'material',
+   		    confirmButton: 'Sim',
+   		    confirmButtonClass: 'btn-primary',
+   		    cancelButton: 'Não',
+   		    cancelButtonClass: 'btn-dark',
+   		    content: 'Confirma Exclusão?',
+   		    confirm: function(){
+   		    	deleteScript();
+   		    },
+   		    cancel: function(){
+   		    }
+   		});
+      });
+
     $("#run-button").on("click", function() {
         $.blockUI();
         $.ajax({
@@ -286,6 +308,26 @@
         	$('#scriptId').val(data.result);
         }).fail(function() {
         	result.setValue("Failed to save script.");
+        }).always(function() {
+          $.unblockUI();
+        });
+    }
+    
+    function deleteScript(){
+    	var scriptId = $('#scriptId').val();
+    	
+        $.blockUI();
+        $.ajax({
+          url: "/console/delete",
+          type: "POST",
+          data: { id: scriptId }
+        }).done(function(data) {
+        	$('#scriptId').val('');
+        	$('#scriptName').val('');
+        	editor.setValue('', 1);
+        	result.setValue(JSON.stringify(data, null, 2));
+        }).fail(function() {
+        	result.setValue("Failed to delete script.");
         }).always(function() {
           $.unblockUI();
         });
