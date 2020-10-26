@@ -2,6 +2,8 @@ package com.automup.controller;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +30,7 @@ public class FormController {
     }
 
 	@RequestMapping(value = "/save", method = {RequestMethod.GET, RequestMethod.POST})
-	public @ResponseBody String saveProgress(
+	public @ResponseBody String save(
 			@RequestParam(name="id") Long id, 
 			@RequestParam(name="name") String name, 
 			@RequestParam(name="content") String content) {
@@ -44,6 +46,14 @@ public class FormController {
     	Form saved = formRepository.save(f);
     	
     	return saved.getId().toString();
+    }
+	
+	@RequestMapping(value = "/submit", method = {RequestMethod.GET, RequestMethod.POST})
+	public @ResponseBody String submit(HttpServletRequest request) {
+
+		System.out.println(request.getParameter("submission[data][password]"));
+    	
+    	return "";
     }
 
 }

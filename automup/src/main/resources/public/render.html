@@ -103,7 +103,7 @@ to get the desired effect
 
 	<script>
 
-    var id = '12';
+    var id = '7';
     var content = '';
     
 	$.getJSON('http://localhost:8080/form/open', {
@@ -117,6 +117,19 @@ to get the desired effect
 			  // Register for the submit event to get the completed submission.
 			  form.on('submit', function(submission) {
 			    console.log('Submission was made!', submission);
+			    
+		        $.ajax({
+		            url: "/form/submit",
+		            type: "POST",
+		            data: { submission: submission }
+		          }).done(function(data) {
+		        	
+		          }).fail(function() {
+
+		          }).always(function() {
+
+		          });
+			    
 			  });
 			  
 			  // Everytime the form changes, this will fire.
