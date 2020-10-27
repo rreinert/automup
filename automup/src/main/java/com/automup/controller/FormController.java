@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.automup.entity.Form;
 import com.automup.repository.FormRepository;
+import com.automup.service.ScriptService;
 
 @Controller
 @RequestMapping("/form")
@@ -20,6 +21,9 @@ public class FormController {
 
     @Autowired
     private FormRepository formRepository;
+    
+    @Autowired
+    private ScriptService scriptService;
     
     @RequestMapping(value = "/open", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody String open(@RequestParam String id) {
@@ -51,8 +55,10 @@ public class FormController {
 	@RequestMapping(value = "/submit", method = {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody String submit(HttpServletRequest request) {
 
-		System.out.println(request.getParameter("submission[data][password]"));
+//		System.out.println(request.getParameter("submission[data][password]"));
     	
+		scriptService.run("test", request);
+		
     	return "";
     }
 

@@ -1,5 +1,7 @@
 package com.automup.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -11,6 +13,6 @@ import com.automup.entity.Script;
 public interface ScriptRepository extends CrudRepository<Script, Long>{
 	
 	@Query("FROM Script s WHERE s.name LIKE :name")
-	Script findByName(@Param("name") String name);
+	List<Script> findByName(@Param("name") String name);
 
 }

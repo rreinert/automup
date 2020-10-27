@@ -3,7 +3,7 @@ package com.automup.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.List; 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -22,15 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.automup.entity.Script;
+import com.automup.entity.ScriptResult;
 import com.automup.repository.ScriptRepository;
-import com.fasterxml.jackson.annotation.JsonInclude;
 
-/**
- * Controller for evaluating scripts from console.
- */
 @Controller
-@RequestMapping("/console")
-public class ConsoleController implements ApplicationContextAware {
+@RequestMapping("/script")
+public class ScriptController implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
@@ -42,7 +39,7 @@ public class ConsoleController implements ApplicationContextAware {
     
     @RequestMapping(method = RequestMethod.GET)
     public String index() {
-        return "redirect:/console/index.html";
+        return "redirect:/script/index.html";
     }
     
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
@@ -184,36 +181,4 @@ public class ConsoleController implements ApplicationContextAware {
 	  return context.eval("js", script);
     }
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private static final class ScriptResult {
-
-        private String[] output;
-        private Object result;
-
-        private ScriptResult() {
-        }
-
-        public String[] getOutput() {
-            return output;
-        }
-
-        public Object getResult() {
-            return result;
-        }
-
-        private static ScriptResult create(Throwable throwable) {
-            String message = throwable.getMessage() == null ? throwable.getClass().getName() : throwable.getMessage();
-            return create(null, message);
-        }
-
-        private static ScriptResult create(Object result, String output) {
-            ScriptResult scriptletResult = new ScriptResult();
-            scriptletResult.result = result;
-            if (StringUtils.hasLength(output)) {
-                scriptletResult.output = output.split(System.lineSeparator());
-            }
-            
-            return scriptletResult;
-        }
-    }
 }

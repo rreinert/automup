@@ -184,7 +184,7 @@
     $("#open-button").on("click", function() {
     	
         $.ajax({
-          url: "/console/list",
+          url: "/script/list",
           type: "POST",
           data: {}
         }).done(function(scripts) {
@@ -231,7 +231,7 @@
     $("#run-button").on("click", function() {
         $.blockUI();
         $.ajax({
-          url: "/console/run",
+          url: "/script/run",
           type: "POST",
           data: { script: editor.getValue() }
         }).done(function(data) {
@@ -247,7 +247,7 @@
     	
         $.blockUI();
         $.ajax({
-          url: "/console/open",
+          url: "/script/open",
           type: "POST",
           data: { id: scriptId }
         }).done(function(data) {
@@ -298,7 +298,7 @@
     	
     	$.blockUI();
         $.ajax({
-          url: "/console/save",
+          url: "/script/save",
           type: "POST",
           data: { script: editor.getValue(),
         	  id: scriptId,
@@ -318,7 +318,7 @@
     	
         $.blockUI();
         $.ajax({
-          url: "/console/delete",
+          url: "/script/delete",
           type: "POST",
           data: { id: scriptId }
         }).done(function(data) {
