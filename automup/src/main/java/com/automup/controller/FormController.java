@@ -1,6 +1,11 @@
 package com.automup.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.automup.entity.Form;
+import com.automup.entity.RestResult;
 import com.automup.repository.FormRepository;
 import com.automup.service.ScriptService;
 
@@ -24,7 +30,24 @@ public class FormController {
     
     @Autowired
     private ScriptService scriptService;
-    
+
+    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public CompletableFuture<RestResult> list() {
+
+    	return CompletableFuture.supplyAsync(() -> {
+    		
+    		List<Form> ret = new ArrayList<Form>();
+            Iterable<Form> forms = formRepository.findAll();
+            for (Form form : forms) {
+				form.setName("<a href='#' onclick='selectForm("+form.getId()+");'>"+form.getName()+"</a>");
+            	ret.add(form);
+			}
+            
+            return RestResult.create(ret, "");
+        }).exceptionally(RestResult::create);
+    }
+
     @RequestMapping(value = "/open", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody String open(@RequestParam String id) {
         Long formId = Long.valueOf(id);
@@ -50,6 +73,28 @@ public class FormController {
     	Form saved = formRepository.save(f);
     	
     	return saved.getId().toString();
+    }
+	
+    @RequestMapping(value = "/delete", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public CompletableFuture<RestResult> delete(@RequestParam String id) {
+
+    	return CompletableFuture.supplyAsync(() -> {
+    		
+    		PrintStream previousConsole = System.out;
+    		
+            ByteArrayOutputStream newConsole = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(newConsole));
+    		
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            Long formId = Long.valueOf(id);
+            formRepository.deleteById(formId);
+            
+            System.setOut(previousConsole);
+            
+            return RestResult.create("", out.toString());
+        }).exceptionally(RestResult::create);
     }
 	
 	@RequestMapping(value = "/submit", method = {RequestMethod.GET, RequestMethod.POST})

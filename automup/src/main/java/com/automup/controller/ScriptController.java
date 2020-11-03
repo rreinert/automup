@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.automup.entity.Script;
-import com.automup.entity.ScriptResult;
+import com.automup.entity.RestResult;
 import com.automup.repository.ScriptRepository;
 
 @Controller
@@ -44,7 +44,7 @@ public class ScriptController implements ApplicationContextAware {
     
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public CompletableFuture<ScriptResult> list() {
+    public CompletableFuture<RestResult> list() {
 
     	return CompletableFuture.supplyAsync(() -> {
     		
@@ -55,13 +55,13 @@ public class ScriptController implements ApplicationContextAware {
             	ret.add(script);
 			}
             
-            return ScriptResult.create(ret, "");
-        }).exceptionally(ScriptResult::create);
+            return RestResult.create(ret, "");
+        }).exceptionally(RestResult::create);
     }
     
     @RequestMapping(value = "/open", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public CompletableFuture<ScriptResult> open(@RequestParam String id) {
+    public CompletableFuture<RestResult> open(@RequestParam String id) {
 
     	return CompletableFuture.supplyAsync(() -> {
     		
@@ -85,13 +85,13 @@ public class ScriptController implements ApplicationContextAware {
             
             System.setOut(previousConsole);
             
-            return ScriptResult.create(code, out.toString());
-        }).exceptionally(ScriptResult::create);
+            return RestResult.create(code, out.toString());
+        }).exceptionally(RestResult::create);
     }
     
     @RequestMapping(value = "/save", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public CompletableFuture<ScriptResult> save(@RequestParam String script, @RequestParam String id, @RequestParam String name) {
+    public CompletableFuture<RestResult> save(@RequestParam String script, @RequestParam String id, @RequestParam String name) {
 
     	return CompletableFuture.supplyAsync(() -> {
     		
@@ -120,13 +120,13 @@ public class ScriptController implements ApplicationContextAware {
             
             System.setOut(previousConsole);
             
-            return ScriptResult.create(ret.getId(), out.toString());
-        }).exceptionally(ScriptResult::create);
+            return RestResult.create(ret.getId(), out.toString());
+        }).exceptionally(RestResult::create);
     }
 
     @RequestMapping(value = "/delete", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public CompletableFuture<ScriptResult> delete(@RequestParam String id) {
+    public CompletableFuture<RestResult> delete(@RequestParam String id) {
 
     	return CompletableFuture.supplyAsync(() -> {
     		
@@ -142,13 +142,13 @@ public class ScriptController implements ApplicationContextAware {
             
             System.setOut(previousConsole);
             
-            return ScriptResult.create("", out.toString());
-        }).exceptionally(ScriptResult::create);
+            return RestResult.create("", out.toString());
+        }).exceptionally(RestResult::create);
     }
 
     @RequestMapping(value = "/run", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public CompletableFuture<ScriptResult> run(@RequestParam String script) {
+    public CompletableFuture<RestResult> run(@RequestParam String script) {
 
     	return CompletableFuture.supplyAsync(() -> {
     		
@@ -168,8 +168,8 @@ public class ScriptController implements ApplicationContextAware {
             
             System.setOut(previousConsole);
             
-            return ScriptResult.create(newConsole.toString(), out.toString());
-        }).exceptionally(ScriptResult::create);
+            return RestResult.create(newConsole.toString(), out.toString());
+        }).exceptionally(RestResult::create);
     }
     
     @Override

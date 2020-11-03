@@ -5,12 +5,12 @@ import org.springframework.util.StringUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ScriptResult {
+public class RestResult {
 
     private String[] output;
     private Object result;
 
-    private ScriptResult() {
+    private RestResult() {
     }
 
     public String[] getOutput() {
@@ -21,13 +21,13 @@ public class ScriptResult {
         return result;
     }
 
-    public static ScriptResult create(Throwable throwable) {
+    public static RestResult create(Throwable throwable) {
         String message = throwable.getMessage() == null ? throwable.getClass().getName() : throwable.getMessage();
         return create(null, message);
     }
 
-    public static ScriptResult create(Object result, String output) {
-        ScriptResult scriptletResult = new ScriptResult();
+    public static RestResult create(Object result, String output) {
+        RestResult scriptletResult = new RestResult();
         scriptletResult.result = result;
         if (StringUtils.hasLength(output)) {
             scriptletResult.output = output.split(System.lineSeparator());
