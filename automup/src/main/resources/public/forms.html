@@ -162,7 +162,6 @@
 
 <!-- OPTIONAL SCRIPTS -->
 <script src="js/demo.js"></script>
-<script src="js/pages/dashboard3.js"></script>
 <script src="js/jquery.blockui.js" type="text/javascript" charset="utf-8"></script>
 
 <script>
@@ -233,36 +232,26 @@
    		    }
    		});
       });
+    
+    $("#run-button").on("click", function() {
+    	var formId = $('#formId').val();
 
+    	var getUrl = window.location;
+    	var baseUrl = getUrl .protocol + "//" + getUrl.host;
+    	var url = baseUrl + "/render.html?id=" + formId;
+    	
+    	window.location.href = url;
+    });
     
     function openForm(formId){
     	var getUrl = window.location;
     	var baseUrl = getUrl .protocol + "//" + getUrl.host;
     	var url = baseUrl + "/form/open?id=" + formId;
     	
-    	editForm(url);
+    	$('#formId').val(formId);
     	
-//         $.blockUI();
-//         $.ajax({
-//           url: "/form/open",
-//           type: "POST",
-//           data: { id: formId }
-//         }).done(function(data) {
-
-//         	$('#formId').val(formId);
-// //         	$('#builder').val(data);
-        	
-// //         	data = JSON.stringify(data, null, 2);
-        	
-//         	editForm(data);
-        	
-//         }).fail(function() {
-// //         	result.setValue("Failed to open script.");
-//         }).always(function() {
-//           $.unblockUI();
-//         });
+    	editForm(url);
     }
-
 
     function loadForms(forms){
 
@@ -298,9 +287,9 @@
     function saveForm(){
     	var formId = $('#formId').val();
     	var formName = $('#formName').val();
-// 	    var formContent = JSON.stringify(schema, null, 4);
+ 	    var formContent = JSON.stringify(schema, null, 4);
     	
-    	formContent = schema;
+  		//formContent = schema;
     	
     	$.blockUI();
         $.ajax({
@@ -324,14 +313,16 @@
     	
         $.blockUI();
         $.ajax({
-          url: "/script/delete",
+          url: "/form/delete",
           type: "POST",
           data: { id: formId }
         }).done(function(data) {
         	$('#formId').val('');
         	$('#formName').val('');
-//         	editor.setValue('', 1);
-//         	result.setValue(JSON.stringify(data, null, 2));
+        	
+        	var data = {};
+        	editForm(data);
+        	
         }).fail(function() {
 //         	result.setValue("Failed to delete form.");
         }).always(function() {
@@ -339,9 +330,9 @@
         });
     }
     
-    function editForm(formContent){
+    function editForm(formUrl){
     	
-    	Formio.builder(document.getElementById('builder'), formContent, {
+    	Formio.builder(document.getElementById('builder'), formUrl, {
   		  builder: {
 //   		    basic: false,
 //   		    advanced: false,

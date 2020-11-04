@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.automup.entity.Form;
 import com.automup.entity.RestResult;
+import com.automup.entity.Script;
 import com.automup.repository.FormRepository;
 import com.automup.service.ScriptService;
 
@@ -62,13 +64,21 @@ public class FormController {
 			@RequestParam(name="name") String name, 
 			@RequestParam(name="content") String content) {
 
-    	Form f = new Form();
-    	if (id != null) {
-        	Optional<Form> found = formRepository.findById(id);
-        	f = found.get();
-    	}
+		Form f = null;
+
+        if (StringUtils.isEmpty(id)) {
+            f = new Form();
+            f.setName(name);
+        }else {
+            Long formId = Long.valueOf(id);
+            Optional<Form> formFound = formRepository.findById(formId);
+            
+            if (formFound != null) {
+            	f = formFound.get();
+            }
+        }		
+		
     	f.setContent(content);
-    	f.setName(name);
     	
     	Form saved = formRepository.save(f);
     	

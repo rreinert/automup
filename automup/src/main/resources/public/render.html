@@ -85,9 +85,7 @@ to get the desired effect
 <script src="js/adminlte.js"></script>
 
 <!-- OPTIONAL SCRIPTS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
 <script src="js/demo.js"></script>
-<script src="js/pages/dashboard3.js"></script>
 
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/form-builder.min.js"></script>
@@ -102,8 +100,8 @@ to get the desired effect
 </script>
 
 	<script>
-
-    var id = '7';
+	
+    var id = getUrlParameter('id');
     var content = '';
     
 	$.getJSON('http://localhost:8080/form/open', {
@@ -142,6 +140,21 @@ to get the desired effect
 	})
 	.fail(function() {
 	});		
+	
+	function getUrlParameter(sParam) {
+	    var sPageURL = window.location.search.substring(1),
+	        sURLVariables = sPageURL.split('&'),
+	        sParameterName,
+	        i;
+
+	    for (i = 0; i < sURLVariables.length; i++) {
+	        sParameterName = sURLVariables[i].split('=');
+
+	        if (sParameterName[0] === sParam) {
+	            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+	        }
+	    }
+	};
 	
 	</script>
 
