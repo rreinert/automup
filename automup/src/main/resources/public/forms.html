@@ -163,26 +163,26 @@
 <!-- OPTIONAL SCRIPTS -->
 <script src="js/demo.js"></script>
 <script src="js/jquery.blockui.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/form-builder.min.js"></script>
+<script src="js/form-render.min.js"></script>
 
 <script>
+	
+	var builderIo;
+	var schema;
+	
 	$(document).ready(function (e) {
 		$( "#header" ).load( "header.html" );
 		$( "#menu" ).load( "menu.html" );
 		$( "#footer" ).load( "footer.html" );
 	});
-</script>
-
-<!--     <script src="js/jquery-3.3.1.min.js"></script> -->
-	<script src="js/form-builder.min.js"></script>
-	<script src="js/form-render.min.js"></script>
-	<script>
 	
     $("#new-button").on("click", function() {
     	$('#formId').val('');
     	$('#formName').val('');
     	
     	var data = {};
-    	editForm(data);
+    	buildForm(data);
     	
     });
     
@@ -240,7 +240,7 @@
     	var baseUrl = getUrl .protocol + "//" + getUrl.host;
     	var url = baseUrl + "/render.html?id=" + formId;
     	
-    	window.location.href = url;
+    	window.open(url,'_blank');
     });
     
     function openForm(formId){
@@ -250,7 +250,7 @@
     	
     	$('#formId').val(formId);
     	
-    	editForm(url);
+    	buildForm(url);
     }
 
     function loadForms(forms){
@@ -289,8 +289,6 @@
     	var formName = $('#formName').val();
  	    var formContent = JSON.stringify(schema, null, 4);
     	
-  		//formContent = schema;
-    	
     	$.blockUI();
         $.ajax({
           url: "/form/save",
@@ -300,7 +298,8 @@
         	  name: formName
           }
         }).done(function(data) {
-        	$('#formId').val(data.result);
+        	$('#formId').val(data);
+        	
         }).fail(function() {
 //         	result.setValue("Failed to save script.");
         }).always(function() {
@@ -321,7 +320,7 @@
         	$('#formName').val('');
         	
         	var data = {};
-        	editForm(data);
+        	buildForm(data);
         	
         }).fail(function() {
 //         	result.setValue("Failed to delete form.");
@@ -330,13 +329,10 @@
         });
     }
     
-    function editForm(formUrl){
+    function buildForm(formUrl){
     	
-    	Formio.builder(document.getElementById('builder'), formUrl, {
+    	builderIo = Formio.builder(document.getElementById('builder'), formUrl, {
   		  builder: {
-//   		    basic: false,
-//   		    advanced: false,
-//   		    data: false,
   		    customBasic: {
   		      title: 'Basic Components',
   		      default: true,
@@ -412,14 +408,19 @@
   		      }        
   		    ]
   		  }
-  		}).then(function(builder) {
-  		  builder.on('saveComponent', function() {
-  		    console.log(builder.schema);
-  		    schema = builder.schema;
-  		  });
+  		}).then(function(b) {
+  		  
+ 			b.on('change', function(s) {
+ 				schema = b.schema;
+  		  		saveForm();
+ 	  		}); 
+
+  		  	b.on('saveComponent', function() {
+  		  		schema = b.schema;
+  		  		saveForm();
+  		  	});
   		  
   		});
-
     	
     }
     
