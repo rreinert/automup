@@ -16,6 +16,9 @@
   
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  
+  <link rel="stylesheet" type="text/css" href="css/formeo.min.css">
+  
 
   
 </head>
@@ -302,10 +305,11 @@
     }
     
     function buildForm(formUrl){
-    	var formeo = new FormeoEditor({
-    		  editorContainer: '#formeo-editor',
-    		  svgSprite: 'https://draggable.github.io/formeo/assets/img/formeo-sprite.svg'
-    	});    	
+    	var options = {
+    		  editorContainer: '#formeo-editor'
+    	};
+    	var formData = null;
+    	var formeo = new FormeoEditor(options, formData);    	
     }
     
 	</script>
