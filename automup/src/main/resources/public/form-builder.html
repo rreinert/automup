@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)http://www.alpacajs.org/demos/form-builder/form-builder.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Alpaca Form Builder</title>
+
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- jQuery -->
+        </script><script type="text/javascript" src="js/jquery.min.js"></script>
+
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.css" rel="stylesheet" media="screen">
+        <link type="text/css" href="css/bootstrap-theme.css" rel="stylesheet">
+        <script type="text/javascript" src="js/bootstrap.js"></script>
+
+        <!-- Handlebars -->
+        <script type="text/javascript" src="js/handlebars.min.js"></script>
+
+        <!-- Alpaca -->
+        <script type="text/javascript" src="js/alpaca.js"></script>
+        <link type="text/css" href="css/alpaca.css" rel="stylesheet">
+
+
+        <!-- Beautify (used by EditorField) -->
+        <script src="js/beautify.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/beautify-css.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/beautify-html.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- typeahead.js -->
+        <script src="js/bloodhound.min.js" type="text/javascript"></script>
+        <script src="js/typeahead.bundle.min.js" type="text/javascript"></script>
+
+        <!-- datatables (for TableField) -->
+        <script src="js/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/dataTables.bootstrap.js" type="text/javascript"></script>
+        <script src="js/dataTables.rowReorder.js" type="text/javascript"></script>
+        <link type="text/css" href="css/dataTables.bootstrap.css" rel="stylesheet">
+
+        <!-- ckeditor (for the ckeditor field) -->
+        <script src="js/ckeditor.js" type="text/javascript"></script><style>.cke{visibility:hidden;}</style>
+
+        <!-- fileupload control (for UploadField) -->
+        <link rel="stylesheet" type="text/css" href="css/jquery.fileupload.css">
+        <link rel="stylesheet" type="text/css" href="css/jquery.fileupload-ui.css">
+        <script src="js/jquery.ui.widget.js"></script>
+        <script src="js/jquery.iframe-transport.js"></script>
+        <script src="js/jquery.fileupload.js"></script>
+        <script src="js/jquery.fileupload-process.js"></script>
+        <script src="js/jquery.fileupload-ui.js"></script>
+
+        <!-- handsontable (for GridField) -->
+        <script src="js/jquery.handsontable.full.js"></script>
+        <link rel="stylesheet" media="screen" href="css/jquery.handsontable.full.css">
+
+        <!-- moment for date and datetime controls -->
+        <script src="js/moment-with-locales.min.js"></script>
+        <!-- bootstrap datetimepicker for date and datetime controls -->
+        <script src="js/bootstrap-datetimepicker.min.js"></script>
+        <link rel="stylesheet" media="screen" href="css/bootstrap-datetimepicker.css">
+
+        <!-- bootstrap-multiselect for time field -->
+        <script src="js/bootstrap-multiselect.js"></script>
+        <link rel="stylesheet" media="screen" href="css/bootstrap-multiselect.css">
+
+        <!-- jQuery Price Format for currency field -->
+        <script type="text/javascript" src="js/jquery.price_format.min.js"></script>
+
+        <!-- ACE editor -->
+        <script src="js/ace.js" type="text/javascript" charset="utf-8"></script>
+        
+        <style id="ace_editor.css">.ace_editor {position: relative;overflow: hidden;font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;direction: ltr;text-align: left;}.ace_scroller {position: absolute;overflow: hidden;top: 0;bottom: 0;background-color: inherit;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;cursor: text;}.ace_content {position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;min-width: 100%;}.ace_dragging .ace_scroller:before{position: absolute;top: 0;left: 0;right: 0;bottom: 0;content: '';background: rgba(250, 250, 250, 0.01);z-index: 1000;}.ace_dragging.ace_dark .ace_scroller:before{background: rgba(0, 0, 0, 0.01);}.ace_selecting, .ace_selecting * {cursor: text !important;}.ace_gutter {position: absolute;overflow : hidden;width: auto;top: 0;bottom: 0;left: 0;cursor: default;z-index: 4;-ms-user-select: none;-moz-user-select: none;-webkit-user-select: none;user-select: none;}.ace_gutter-active-line {position: absolute;left: 0;right: 0;}.ace_scroller.ace_scroll-left {box-shadow: 17px 0 16px -16px rgba(0, 0, 0, 0.4) inset;}.ace_gutter-cell {padding-left: 19px;padding-right: 6px;background-repeat: no-repeat;}.ace_gutter-cell.ace_error {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABOFBMVEX/////////QRswFAb/Ui4wFAYwFAYwFAaWGAfDRymzOSH/PxswFAb/SiUwFAYwFAbUPRvjQiDllog5HhHdRybsTi3/Tyv9Tir+Syj/UC3////XurebMBIwFAb/RSHbPx/gUzfdwL3kzMivKBAwFAbbvbnhPx66NhowFAYwFAaZJg8wFAaxKBDZurf/RB6mMxb/SCMwFAYwFAbxQB3+RB4wFAb/Qhy4Oh+4QifbNRcwFAYwFAYwFAb/QRzdNhgwFAYwFAbav7v/Uy7oaE68MBK5LxLewr/r2NXewLswFAaxJw4wFAbkPRy2PyYwFAaxKhLm1tMwFAazPiQwFAaUGAb/QBrfOx3bvrv/VC/maE4wFAbRPBq6MRO8Qynew8Dp2tjfwb0wFAbx6eju5+by6uns4uH9/f36+vr/GkHjAAAAYnRSTlMAGt+64rnWu/bo8eAA4InH3+DwoN7j4eLi4xP99Nfg4+b+/u9B/eDs1MD1mO7+4PHg2MXa347g7vDizMLN4eG+Pv7i5evs/v79yu7S3/DV7/498Yv24eH+4ufQ3Ozu/v7+y13sRqwAAADLSURBVHjaZc/XDsFgGIBhtDrshlitmk2IrbHFqL2pvXf/+78DPokj7+Fz9qpU/9UXJIlhmPaTaQ6QPaz0mm+5gwkgovcV6GZzd5JtCQwgsxoHOvJO15kleRLAnMgHFIESUEPmawB9ngmelTtipwwfASilxOLyiV5UVUyVAfbG0cCPHig+GBkzAENHS0AstVF6bacZIOzgLmxsHbt2OecNgJC83JERmePUYq8ARGkJx6XtFsdddBQgZE2nPR6CICZhawjA4Fb/chv+399kfR+MMMDGOQAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: 2px center;}.ace_gutter-cell.ace_warning {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAmVBMVEX///8AAAD///8AAAAAAABPSzb/5sAAAAB/blH/73z/ulkAAAAAAAD85pkAAAAAAAACAgP/vGz/rkDerGbGrV7/pkQICAf////e0IsAAAD/oED/qTvhrnUAAAD/yHD/njcAAADuv2r/nz//oTj/p064oGf/zHAAAAA9Nir/tFIAAAD/tlTiuWf/tkIAAACynXEAAAAAAAAtIRW7zBpBAAAAM3RSTlMAABR1m7RXO8Ln31Z36zT+neXe5OzooRDfn+TZ4p3h2hTf4t3k3ucyrN1K5+Xaks52Sfs9CXgrAAAAjklEQVR42o3PbQ+CIBQFYEwboPhSYgoYunIqqLn6/z8uYdH8Vmdnu9vz4WwXgN/xTPRD2+sgOcZjsge/whXZgUaYYvT8QnuJaUrjrHUQreGczuEafQCO/SJTufTbroWsPgsllVhq3wJEk2jUSzX3CUEDJC84707djRc5MTAQxoLgupWRwW6UB5fS++NV8AbOZgnsC7BpEAAAAABJRU5ErkJggg==");background-position: 2px center;}.ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAAAAAA6mKC9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAJ0Uk5TAAB2k804AAAAPklEQVQY02NgIB68QuO3tiLznjAwpKTgNyDbMegwisCHZUETUZV0ZqOquBpXj2rtnpSJT1AEnnRmL2OgGgAAIKkRQap2htgAAAAASUVORK5CYII=");background-position: 2px center;}.ace_dark .ace_gutter-cell.ace_info {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAJFBMVEUAAAChoaGAgIAqKiq+vr6tra1ZWVmUlJSbm5s8PDxubm56enrdgzg3AAAAAXRSTlMAQObYZgAAAClJREFUeNpjYMAPdsMYHegyJZFQBlsUlMFVCWUYKkAZMxZAGdxlDMQBAG+TBP4B6RyJAAAAAElFTkSuQmCC");}.ace_scrollbar {position: absolute;right: 0;bottom: 0;z-index: 6;}.ace_scrollbar-inner {position: absolute;cursor: text;left: 0;top: 0;}.ace_scrollbar-v{overflow-x: hidden;overflow-y: scroll;top: 0;}.ace_scrollbar-h {overflow-x: scroll;overflow-y: hidden;left: 0;}.ace_print-margin {position: absolute;height: 100%;}.ace_text-input {position: absolute;z-index: 0;width: 0.5em;height: 1em;opacity: 0;background: transparent;-moz-appearance: none;appearance: none;border: none;resize: none;outline: none;overflow: hidden;font: inherit;padding: 0 1px;margin: 0 -1px;text-indent: -1em;-ms-user-select: text;-moz-user-select: text;-webkit-user-select: text;user-select: text;white-space: pre!important;}.ace_text-input.ace_composition {background: inherit;color: inherit;z-index: 1000;opacity: 1;text-indent: 0;}.ace_layer {z-index: 1;position: absolute;overflow: hidden;word-wrap: normal;white-space: pre;height: 100%;width: 100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;pointer-events: none;}.ace_gutter-layer {position: relative;width: auto;text-align: right;pointer-events: auto;}.ace_text-layer {font: inherit !important;}.ace_cjk {display: inline-block;text-align: center;}.ace_cursor-layer {z-index: 4;}.ace_cursor {z-index: 4;position: absolute;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;border-left: 2px solid;transform: translatez(0);}.ace_slim-cursors .ace_cursor {border-left-width: 1px;}.ace_overwrite-cursors .ace_cursor {border-left-width: 0;border-bottom: 1px solid;}.ace_hidden-cursors .ace_cursor {opacity: 0.2;}.ace_smooth-blinking .ace_cursor {-webkit-transition: opacity 0.18s;transition: opacity 0.18s;}.ace_editor.ace_multiselect .ace_cursor {border-left-width: 1px;}.ace_marker-layer .ace_step, .ace_marker-layer .ace_stack {position: absolute;z-index: 3;}.ace_marker-layer .ace_selection {position: absolute;z-index: 5;}.ace_marker-layer .ace_bracket {position: absolute;z-index: 6;}.ace_marker-layer .ace_active-line {position: absolute;z-index: 2;}.ace_marker-layer .ace_selected-word {position: absolute;z-index: 4;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}.ace_line .ace_fold {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;display: inline-block;height: 11px;margin-top: -2px;vertical-align: middle;background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACJJREFUeNpi+P//fxgTAwPDBxDxD078RSX+YeEyDFMCIMAAI3INmXiwf2YAAAAASUVORK5CYII=");background-repeat: no-repeat, repeat-x;background-position: center center, top left;color: transparent;border: 1px solid black;border-radius: 2px;cursor: pointer;pointer-events: auto;}.ace_dark .ace_fold {}.ace_fold:hover{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAJCAYAAADU6McMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJpJREFUeNpi/P//PwOlgAXGYGRklAVSokD8GmjwY1wasKljQpYACtpCFeADcHVQfQyMQAwzwAZI3wJKvCLkfKBaMSClBlR7BOQikCFGQEErIH0VqkabiGCAqwUadAzZJRxQr/0gwiXIal8zQQPnNVTgJ1TdawL0T5gBIP1MUJNhBv2HKoQHHjqNrA4WO4zY0glyNKLT2KIfIMAAQsdgGiXvgnYAAAAASUVORK5CYII="),url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAA3CAYAAADNNiA5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACBJREFUeNpi+P//fz4TAwPDZxDxD5X4i5fLMEwJgAADAEPVDbjNw87ZAAAAAElFTkSuQmCC");}.ace_tooltip {background-color: #FFF;background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.1));background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1));border: 1px solid gray;border-radius: 1px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);color: black;max-width: 100%;padding: 3px 4px;position: fixed;z-index: 999999;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;cursor: default;white-space: pre;word-wrap: break-word;line-height: normal;font-style: normal;font-weight: normal;letter-spacing: normal;pointer-events: none;}.ace_folding-enabled > .ace_gutter-cell {padding-right: 13px;}.ace_fold-widget {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;margin: 0 -12px 0 1px;display: none;width: 11px;vertical-align: top;background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42mWKsQ0AMAzC8ixLlrzQjzmBiEjp0A6WwBCSPgKAXoLkqSot7nN3yMwR7pZ32NzpKkVoDBUxKAAAAABJRU5ErkJggg==");background-repeat: no-repeat;background-position: center;border-radius: 3px;border: 1px solid transparent;cursor: pointer;}.ace_folding-enabled .ace_fold-widget {display: inline-block;   }.ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVR42m3HwQkAMAhD0YzsRchFKI7sAikeWkrxwScEB0nh5e7KTPWimZki4tYfVbX+MNl4pyZXejUO1QAAAABJRU5ErkJggg==");}.ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAGCAYAAAAG5SQMAAAAOUlEQVR42jXKwQkAMAgDwKwqKD4EwQ26sSOkVWjgIIHAzPiCgaqiqnJHZnKICBERHN194O5b9vbLuAVRL+l0YWnZAAAAAElFTkSuQmCCXA==");}.ace_fold-widget:hover {border: 1px solid rgba(0, 0, 0, 0.3);background-color: rgba(255, 255, 255, 0.2);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);}.ace_fold-widget:active {border: 1px solid rgba(0, 0, 0, 0.4);background-color: rgba(0, 0, 0, 0.05);box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);}.ace_dark .ace_fold-widget {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHklEQVQIW2P4//8/AzoGEQ7oGCaLLAhWiSwB146BAQCSTPYocqT0AAAAAElFTkSuQmCC");}.ace_dark .ace_fold-widget.ace_end {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAH0lEQVQIW2P4//8/AxQ7wNjIAjDMgC4AxjCVKBirIAAF0kz2rlhxpAAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget.ace_closed {background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAFCAYAAACAcVaiAAAAHElEQVQIW2P4//+/AxAzgDADlOOAznHAKgPWAwARji8UIDTfQQAAAABJRU5ErkJggg==");}.ace_dark .ace_fold-widget:hover {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);background-color: rgba(255, 255, 255, 0.1);}.ace_dark .ace_fold-widget:active {box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);}.ace_fold-widget.ace_invalid {background-color: #FFB4B4;border-color: #DE5555;}.ace_fade-fold-widgets .ace_fold-widget {-webkit-transition: opacity 0.4s ease 0.05s;transition: opacity 0.4s ease 0.05s;opacity: 0;}.ace_fade-fold-widgets:hover .ace_fold-widget {-webkit-transition: opacity 0.05s ease 0.05s;transition: opacity 0.05s ease 0.05s;opacity:1;}.ace_underline {text-decoration: underline;}.ace_bold {font-weight: bold;}.ace_nobold .ace_bold {font-weight: normal;}.ace_italic {font-style: italic;}.ace_error-marker {background-color: rgba(255, 0, 0,0.2);position: absolute;z-index: 9;}.ace_highlight-marker {background-color: rgba(255, 255, 0,0.2);position: absolute;z-index: 8;}.ace_br1 {border-top-left-radius    : 3px;}.ace_br2 {border-top-right-radius   : 3px;}.ace_br3 {border-top-left-radius    : 3px; border-top-right-radius:    3px;}.ace_br4 {border-bottom-right-radius: 3px;}.ace_br5 {border-top-left-radius    : 3px; border-bottom-right-radius: 3px;}.ace_br6 {border-top-right-radius   : 3px; border-bottom-right-radius: 3px;}.ace_br7 {border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px;}.ace_br8 {border-bottom-left-radius : 3px;}.ace_br9 {border-top-left-radius    : 3px; border-bottom-left-radius:  3px;}.ace_br10{border-top-right-radius   : 3px; border-bottom-left-radius:  3px;}.ace_br11{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-left-radius:  3px;}.ace_br12{border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br13{border-top-left-radius    : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br14{border-top-right-radius   : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}.ace_br15{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px;}
+		/*# sourceURL=ace/css/ace_editor.css */
+		</style>
+		
+		<style id="ace-tm">.ace-tm .ace_gutter {background: #f0f0f0;color: #333;}.ace-tm .ace_print-margin {width: 1px;background: #e8e8e8;}.ace-tm .ace_fold {background-color: #6B72E6;}.ace-tm {background-color: #FFFFFF;color: black;}.ace-tm .ace_cursor {color: black;}.ace-tm .ace_invisible {color: rgb(191, 191, 191);}.ace-tm .ace_storage,.ace-tm .ace_keyword {color: blue;}.ace-tm .ace_constant {color: rgb(197, 6, 11);}.ace-tm .ace_constant.ace_buildin {color: rgb(88, 72, 246);}.ace-tm .ace_constant.ace_language {color: rgb(88, 92, 246);}.ace-tm .ace_constant.ace_library {color: rgb(6, 150, 14);}.ace-tm .ace_invalid {background-color: rgba(255, 0, 0, 0.1);color: red;}.ace-tm .ace_support.ace_function {color: rgb(60, 76, 114);}.ace-tm .ace_support.ace_constant {color: rgb(6, 150, 14);}.ace-tm .ace_support.ace_type,.ace-tm .ace_support.ace_class {color: rgb(109, 121, 222);}.ace-tm .ace_keyword.ace_operator {color: rgb(104, 118, 135);}.ace-tm .ace_string {color: rgb(3, 106, 7);}.ace-tm .ace_comment {color: rgb(76, 136, 107);}.ace-tm .ace_comment.ace_doc {color: rgb(0, 102, 255);}.ace-tm .ace_comment.ace_doc.ace_tag {color: rgb(128, 159, 191);}.ace-tm .ace_constant.ace_numeric {color: rgb(0, 0, 205);}.ace-tm .ace_variable {color: rgb(49, 132, 149);}.ace-tm .ace_xml-pe {color: rgb(104, 104, 91);}.ace-tm .ace_entity.ace_name.ace_function {color: #0000A2;}.ace-tm .ace_heading {color: rgb(12, 7, 255);}.ace-tm .ace_list {color:rgb(185, 6, 144);}.ace-tm .ace_meta.ace_tag {color:rgb(0, 22, 142);}.ace-tm .ace_string.ace_regex {color: rgb(255, 0, 0)}.ace-tm .ace_marker-layer .ace_selection {background: rgb(181, 213, 255);}.ace-tm.ace_multiselect .ace_selection.ace_start {box-shadow: 0 0 3px 0px white;}.ace-tm .ace_marker-layer .ace_step {background: rgb(252, 255, 0);}.ace-tm .ace_marker-layer .ace_stack {background: rgb(164, 229, 101);}.ace-tm .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgb(192, 192, 192);}.ace-tm .ace_marker-layer .ace_active-line {background: rgba(0, 0, 0, 0.07);}.ace-tm .ace_gutter-active-line {background-color : #dcdcdc;}.ace-tm .ace_marker-layer .ace_selected-word {background: rgb(250, 250, 255);border: 1px solid rgb(200, 200, 250);}.ace-tm .ace_indent-guide {background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==") right repeat-y;}
+		/*# sourceURL=ace/css/ace-tm */
+		</style>
+		
+		<style>    .error_widget_wrapper {        background: inherit;        color: inherit;        border:none    }    .error_widget {        border-top: solid 2px;        border-bottom: solid 2px;        margin: 5px 0;        padding: 10px 40px;        white-space: pre-wrap;    }    .error_widget.ace_error, .error_widget_arrow.ace_error{        border-color: #ff5a5a    }    .error_widget.ace_warning, .error_widget_arrow.ace_warning{        border-color: #F1D817    }    .error_widget.ace_info, .error_widget_arrow.ace_info{        border-color: #5a5a5a    }    .error_widget.ace_ok, .error_widget_arrow.ace_ok{        border-color: #5aaa5a    }    .error_widget_arrow {        position: absolute;        border: solid 5px;        border-top-color: transparent!important;        border-right-color: transparent!important;        border-left-color: transparent!important;        top: -5px;    }
+		</style>
+
+        <!-- jQuery UI for draggable support -->
+        <script src="js/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
+
+        <script type="text/javascript" src="js/form-builder.js"></script>
+        <link type="text/css" href="css/form-builder.css" rel="stylesheet">
+
+    <script src="js/mode-json.js"></script>
+    <script src="js/mode-javascript.js"></script></head>
+    
+    
+    <body data-spy="scroll" data-target=".demo-nav">
+
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="http://www.alpacajs.org/examples.html">Alpaca Examples</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="http://www.alpacajs.org/demos/form-builder/form-builder.html">Form Builder Demo</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <p class="alert alert-warning">
+                        This is a sample visual form builder using Alpaca.  It uses the field API to derive metadata
+                        attributes, provide modal popup editors and a drag and drop environment for assembling your
+                        form.  It also provides instant preview while editing your JSON schema, data and options.
+                        <br>
+                        <br>
+                        <b>This form builder is not supported</b>.  (Read that again)
+                        <br>
+                        <br>
+                        It is provided as a courtesy to demonstrate what is possible.
+                    </p>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div>
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="http://www.alpacajs.org/demos/form-builder/form-builder.html#source" data-toggle="tab" class="tab-item tab-item-source">Source</a></li>
+                            <li><a href="http://www.alpacajs.org/demos/form-builder/form-builder.html#designer" data-toggle="tab" class="tab-item tab-item-designer">Designer</a></li>
+                            <li><a href="http://www.alpacajs.org/demos/form-builder/form-builder.html#view" data-toggle="tab" class="tab-item tab-item-view">View</a></li>
+                            <li><a href="http://www.alpacajs.org/demos/form-builder/form-builder.html#code" data-toggle="tab" class="tab-item tab-item-code">Code</a></li>
+                            <li><a href="http://www.alpacajs.org/demos/form-builder/form-builder.html#loadsave" data-toggle="tab" class="tab-item tab-item-loadsave">Load / Save</a></li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="source">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div>
+                                        <ul class="nav nav-tabs">
+                                            <li class="active"><a href="http://www.alpacajs.org/demos/form-builder/form-builder.html#schema" data-toggle="tab" class="tab-source-schema">Schema</a></li>
+                                            <li><a href="http://www.alpacajs.org/demos/form-builder/form-builder.html#options" data-toggle="tab" class="tab-source-options">Options</a></li>
+                                            <li><a href="http://www.alpacajs.org/demos/form-builder/form-builder.html#data" data-toggle="tab" class="tab-source-data">Data</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active ace_editor ace-tm" id="schema"><textarea class="ace_text-input" wrap="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="opacity: 0; height: 14px; width: 6.59781px; left: 51px; top: 0px;"></textarea><div class="ace_gutter"><div class="ace_layer ace_gutter-layer ace_folding-enabled" style="margin-top: 0px; height: 426px; width: 47px;"><div class="ace_gutter-cell " style="height: 14px;">1<span class="ace_fold-widget ace_start ace_open" style="height: 14px;"></span></div><div class="ace_gutter-cell " style="height: 14px;">2</div><div class="ace_gutter-cell " style="height: 14px;">3<span class="ace_fold-widget ace_start ace_open" style="height: 14px;"></span></div><div class="ace_gutter-cell " style="height: 14px;">4<span class="ace_fold-widget ace_start ace_open" style="height: 14px;"></span></div><div class="ace_gutter-cell " style="height: 14px;">5</div><div class="ace_gutter-cell " style="height: 14px;">6</div><div class="ace_gutter-cell " style="height: 14px;">7</div><div class="ace_gutter-cell " style="height: 14px;">8<span class="ace_fold-widget ace_start ace_open" style="height: 14px;"></span></div><div class="ace_gutter-cell " style="height: 14px;">9</div><div class="ace_gutter-cell " style="height: 14px;">10</div><div class="ace_gutter-cell " style="height: 14px;">11</div><div class="ace_gutter-cell " style="height: 14px;">12</div><div class="ace_gutter-cell " style="height: 14px;">13<span class="ace_fold-widget ace_start ace_open" style="height: 14px;"></span></div><div class="ace_gutter-cell " style="height: 14px;">14</div><div class="ace_gutter-cell " style="height: 14px;">15</div><div class="ace_gutter-cell " style="height: 14px;">16</div><div class="ace_gutter-cell " style="height: 14px;">17<span class="ace_fold-widget ace_start ace_open" style="height: 14px;"></span></div><div class="ace_gutter-cell " style="height: 14px;">18</div><div class="ace_gutter-cell " style="height: 14px;">19</div><div class="ace_gutter-cell " style="height: 14px;">20</div><div class="ace_gutter-cell " style="height: 14px;">21</div><div class="ace_gutter-cell " style="height: 14px;">22</div><div class="ace_gutter-cell " style="height: 14px;">23</div></div><div class="ace_gutter-active-line" style="top: 0px; height: 14px;"></div></div><div class="ace_scroller" style="left: 47px; right: 0px; bottom: 0px;"><div class="ace_content" style="margin-top: 0px; width: 500px; height: 426px; margin-left: 0px;"><div class="ace_layer ace_print-margin-layer"><div class="ace_print-margin" style="left: 531.825px; visibility: hidden;"></div></div><div class="ace_layer ace_marker-layer"><div class="ace_active-line" style="height:14px;top:0px;left:0;right:0;"></div></div><div class="ace_layer ace_text-layer" style="padding: 0px 4px;"><div class="ace_line" style="height:14px"><span class="ace_paren ace_lparen">{</span></div><div class="ace_line" style="height:14px">    <span class="ace_variable">"type"</span>: <span class="ace_string">"object"</span>,</div><div class="ace_line" style="height:14px">    <span class="ace_variable">"properties"</span>: <span class="ace_paren ace_lparen">{</span></div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span>    <span class="ace_variable">"email"</span>: <span class="ace_paren ace_lparen">{</span></div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    <span class="ace_variable">"type"</span>: <span class="ace_string">"string"</span>,</div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    <span class="ace_variable">"required"</span>: <span class="ace_constant ace_language ace_boolean">false</span></div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span>    <span class="ace_paren ace_rparen">}</span>,</div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span>    <span class="ace_variable">"password"</span>: <span class="ace_paren ace_lparen">{</span></div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    <span class="ace_variable">"type"</span>: <span class="ace_string">"string"</span>,</div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    <span class="ace_variable">"required"</span>: <span class="ace_constant ace_language ace_boolean">false</span>,</div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    <span class="ace_variable">"pattern"</span>: <span class="ace_paren ace_lparen">{</span><span class="ace_paren ace_rparen">}</span></div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span>    <span class="ace_paren ace_rparen">}</span>,</div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span>    <span class="ace_variable">"file"</span>: <span class="ace_paren ace_lparen">{</span></div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    <span class="ace_variable">"type"</span>: <span class="ace_string">"string"</span>,</div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    <span class="ace_variable">"required"</span>: <span class="ace_constant ace_language ace_boolean">false</span></div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span>    <span class="ace_paren ace_rparen">}</span>,</div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span>    <span class="ace_variable">"check"</span>: <span class="ace_paren ace_lparen">{</span></div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    <span class="ace_variable">"type"</span>: <span class="ace_string">"boolean"</span>,</div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    <span class="ace_variable">"required"</span>: <span class="ace_constant ace_language ace_boolean">false</span>,</div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span><span class="ace_indent-guide">    </span>    <span class="ace_variable">"default"</span>: <span class="ace_constant ace_language ace_boolean">true</span></div><div class="ace_line" style="height:14px"><span class="ace_indent-guide">    </span>    <span class="ace_paren ace_rparen">}</span></div><div class="ace_line" style="height:14px">    <span class="ace_paren ace_rparen">}</span></div><div class="ace_line" style="height:14px"><span class="ace_paren ace_rparen">}</span></div></div><div class="ace_layer ace_marker-layer"></div><div class="ace_layer ace_cursor-layer ace_hidden-cursors"><div class="ace_cursor" style="left: 4px; top: 0px; width: 6.59781px; height: 14px;"></div></div></div></div><div class="ace_scrollbar ace_scrollbar-v" style="display: none; width: 22px; bottom: 0px;"><div class="ace_scrollbar-inner" style="width: 22px; height: 322px;"></div></div><div class="ace_scrollbar ace_scrollbar-h" style="display: none; height: 22px; left: 47px; right: 0px;"><div class="ace_scrollbar-inner" style="height: 22px; width: 547px;"></div></div><div style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; font: inherit; overflow: hidden;"><div style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; font: inherit; overflow: visible;"></div><div style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; font-style: inherit; font-variant: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; overflow: visible;">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div></div></div>
+                                        <div class="tab-pane ace_editor ace-tm" id="options"><textarea class="ace_text-input" wrap="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="opacity: 0;"></textarea><div class="ace_gutter"><div class="ace_layer ace_gutter-layer ace_folding-enabled"></div><div class="ace_gutter-active-line"></div></div><div class="ace_scroller"><div class="ace_content"><div class="ace_layer ace_print-margin-layer"><div class="ace_print-margin" style="left: 4px; visibility: hidden;"></div></div><div class="ace_layer ace_marker-layer"></div><div class="ace_layer ace_text-layer" style="padding: 0px 4px;"></div><div class="ace_layer ace_marker-layer"></div><div class="ace_layer ace_cursor-layer ace_hidden-cursors"><div class="ace_cursor"></div></div></div></div><div class="ace_scrollbar ace_scrollbar-v" style="display: none; width: 22px;"><div class="ace_scrollbar-inner" style="width: 22px;"></div></div><div class="ace_scrollbar ace_scrollbar-h" style="display: none; height: 22px;"><div class="ace_scrollbar-inner" style="height: 22px;"></div></div><div style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; font: inherit; overflow: hidden;"><div style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; font: inherit; overflow: visible;"></div><div style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; font: inherit; overflow: visible;">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div></div></div>
+                                        <div class="tab-pane ace_editor ace-tm" id="data"><textarea class="ace_text-input" wrap="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="opacity: 0;"></textarea><div class="ace_gutter"><div class="ace_layer ace_gutter-layer ace_folding-enabled"></div><div class="ace_gutter-active-line"></div></div><div class="ace_scroller"><div class="ace_content"><div class="ace_layer ace_print-margin-layer"><div class="ace_print-margin" style="left: 4px; visibility: hidden;"></div></div><div class="ace_layer ace_marker-layer"></div><div class="ace_layer ace_text-layer" style="padding: 0px 4px;"></div><div class="ace_layer ace_marker-layer"></div><div class="ace_layer ace_cursor-layer ace_hidden-cursors"><div class="ace_cursor"></div></div></div></div><div class="ace_scrollbar ace_scrollbar-v" style="display: none; width: 22px;"><div class="ace_scrollbar-inner" style="width: 22px;"></div></div><div class="ace_scrollbar ace_scrollbar-h" style="display: none; height: 22px;"><div class="ace_scrollbar-inner" style="height: 22px;"></div></div><div style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; font: inherit; overflow: hidden;"><div style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; font: inherit; overflow: visible;"></div><div style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; font: inherit; overflow: visible;">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div></div></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
+                                        <ul class="nav nav-tabs">
+                                            <li class="active"><a href="http://www.alpacajs.org/demos/form-builder/form-builder.html#preview" data-toggle="tab">Preview</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="preview">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div id="previewDiv" class=""><div id="previewDiv"></div><div class="alpaca-field alpaca-field-object alpaca-optional alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca58" data-alpaca-field-path="/" data-alpaca-field-name="">
+
+
+
+        <div class="alpaca-container alpaca-vertical alpaca-container-has-items" data-alpaca-container-item-count="4">
+
+
+            <div class="alpaca-container-item alpaca-container-item-first" data-alpaca-container-item-index="0" data-alpaca-container-item-name="email" data-alpaca-container-item-parent-field-id="alpaca58">
+
+        <div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-field-valid" data-alpaca-field-id="alpaca59" data-alpaca-field-path="/email" data-alpaca-field-name="email">
+
+        <label class="control-label alpaca-control-label" for="alpaca59">Email Address</label>
+
+
+        <input type="text" id="alpaca59" name="email" class="alpaca-control form-control" autocomplete="off">
+
+
+
+    </div>
+
+    </div>
+
+
+            <div class="alpaca-container-item" data-alpaca-container-item-index="1" data-alpaca-container-item-name="password" data-alpaca-container-item-parent-field-id="alpaca58">
+
+        <div class="form-group alpaca-field alpaca-field-password alpaca-optional alpaca-autocomplete alpaca-field-valid" data-alpaca-field-id="alpaca60" data-alpaca-field-path="/password" data-alpaca-field-name="password">
+
+        <label class="control-label alpaca-control-label" for="alpaca60">Password</label>
+
+
+        <input type="password" id="alpaca60" name="password" class="alpaca-control form-control" autocomplete="off">
+
+
+
+    </div>
+
+    </div>
+
+
+            <div class="alpaca-container-item" data-alpaca-container-item-index="2" data-alpaca-container-item-name="file" data-alpaca-container-item-parent-field-id="alpaca58">
+
+        <div class="form-group alpaca-field alpaca-field-file alpaca-optional alpaca-autocomplete alpaca-field-valid" data-alpaca-field-id="alpaca61" data-alpaca-field-path="/file" data-alpaca-field-name="file">
+
+        <label class="control-label alpaca-control-label" for="alpaca61">File Upload</label>
+
+
+        <input type="file" id="alpaca61" name="file" class="alpaca-control" autocomplete="off">
+
+
+
+    </div>
+
+    </div>
+
+
+            <div class="alpaca-container-item alpaca-container-item-last" data-alpaca-container-item-index="3" data-alpaca-container-item-name="check" data-alpaca-container-item-parent-field-id="alpaca58">
+
+        <div class="form-group alpaca-field alpaca-field-checkbox alpaca-optional alpaca-field-valid" data-alpaca-field-id="alpaca62" data-alpaca-field-path="/check" data-alpaca-field-name="check">
+
+        <label class="control-label alpaca-control-label" for="alpaca62">Newsletter</label>
+
+
+        <div class="alpaca-control checkbox" name="check">
+
+            <label>
+
+                <input type="checkbox" checked="" name="check" class="">
+
+                    Sign me up for the News Letter!
+
+            </label>
+
+        </div>
+
+
+
+    </div>
+
+    </div>
+
+
+    </div>
+
+
+    </div></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="designer">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div id="designerDiv"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div>
+                                                <ul class="nav nav-tabs">
+                                                    <li class="active"><a href="http://www.alpacajs.org/demos/form-builder/form-builder.html#types" data-toggle="tab">Types</a></li>
+                                                    <li><a href="http://www.alpacajs.org/demos/form-builder/form-builder.html#basic" data-toggle="tab">Basic</a></li>
+                                                    <li><a href="http://www.alpacajs.org/demos/form-builder/form-builder.html#advanced" data-toggle="tab">Advanced</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="tab-content">
+                                                <div class="tab-pane active" id="types"><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string"><div><span class="form-element-title">String</span> (<span class="form-element-type">string</span>)</div><div class="form-element-field-description">A textual property</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="number"><div><span class="form-element-title">Number</span> (<span class="form-element-type">number</span>)</div><div class="form-element-field-description">A numerical property</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="boolean"><div><span class="form-element-title">Boolean</span> (<span class="form-element-type">boolean</span>)</div><div class="form-element-field-description">A true/false property</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="object"><div><span class="form-element-title">Object</span> (<span class="form-element-type">object</span>)</div><div class="form-element-field-description">A collection of keyed sub-properties</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="array"><div><span class="form-element-title">Array</span> (<span class="form-element-type">array</span>)</div><div class="form-element-field-description">An array of sub-properties</div></div></div>
+                                                <div class="tab-pane" id="basic"><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="text"><div><span class="form-element-title">Single-Line Text</span> (<span class="form-element-type">text</span>)</div><div class="form-element-field-description">Text field for single-line text.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="textarea"><div><span class="form-element-title">Multi-Line Text</span> (<span class="form-element-type">textarea</span>)</div><div class="form-element-field-description">Textarea field for multiple line text.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="file"><div><span class="form-element-title">File Field</span> (<span class="form-element-type">file</span>)</div><div class="form-element-field-description">Field for uploading files.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="number" data-field-type="number"><div><span class="form-element-title">Number Field</span> (<span class="form-element-type">number</span>)</div><div class="form-element-field-description">Field for float numbers.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="array" data-field-type="array"><div><span class="form-element-title">Array Field</span> (<span class="form-element-type">array</span>)</div><div class="form-element-field-description">Field for list of items with same data type or structure.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="object" data-field-type="object"><div><span class="form-element-title">Object Field</span> (<span class="form-element-type">object</span>)</div><div class="form-element-field-description">Object field for containing other fields</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="any" data-field-type="any"><div><span class="form-element-title">Any Field</span> (<span class="form-element-type">any</span>)</div><div class="form-element-field-description">Any field.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="hidden"><div><span class="form-element-title">Hidden</span> (<span class="form-element-type">hidden</span>)</div><div class="form-element-field-description">Field for a hidden HTML input</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="boolean" data-field-type="checkbox"><div><span class="form-element-title">Checkbox Field</span> (<span class="form-element-type">checkbox</span>)</div><div class="form-element-field-description">Checkbox Field for boolean (true/false), string ('true', 'false' or comma-delimited string of values) or data array.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="undefined" data-field-type="radio"><div><span class="form-element-title">Radio Group Field</span> (<span class="form-element-type">radio</span>)</div><div class="form-element-field-description">Radio Group Field with list of options.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="undefined" data-field-type="select"><div><span class="form-element-title">Select Field</span> (<span class="form-element-type">select</span>)</div><div class="form-element-field-description">Select Field</div></div></div>
+                                                <div class="tab-pane" id="advanced"><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="undefined" data-field-type="chooser"><div><span class="form-element-title">Chooser Field</span> (<span class="form-element-type">chooser</span>)</div><div class="form-element-field-description">Chooser Field</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="any" data-field-type="address"><div><span class="form-element-title">Address</span> (<span class="form-element-type">address</span>)</div><div class="form-element-field-description">Standard US Address with Street, City, State and Zip. Also comes with support for Google map.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="ckeditor"><div><span class="form-element-title">CK Editor</span> (<span class="form-element-type">ckeditor</span>)</div><div class="form-element-field-description">Provides an instance of a CK Editor control for use in editing HTML.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="color"><div><span class="form-element-title">Color Field</span> (<span class="form-element-type">color</span>)</div><div class="form-element-field-description">A color picker for selecting hexadecimal color values</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="colorpicker"><div><span class="form-element-title">Color Picker Field</span> (<span class="form-element-type">colorpicker</span>)</div><div class="form-element-field-description">A color picker for selecting hexadecimal color values</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="undefined" data-field-type="country"><div><span class="form-element-title">Country Field</span> (<span class="form-element-type">country</span>)</div><div class="form-element-field-description">Provides a dropdown selector of countries keyed by their ISO3 code.  The names of the countries are read from the I18N bundle for the current locale.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="undefined" data-field-type="countryCallingCode"><div><span class="form-element-title">Country Calling Code Field</span> (<span class="form-element-type">countryCallingCode</span>)</div><div class="form-element-field-description">Provides a dropdown selector of country dialing codes.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="currency"><div><span class="form-element-title">Currency Field</span> (<span class="form-element-type">currency</span>)</div><div class="form-element-field-description">Provides an automatically formatted and configurable input for entering currency amounts.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="date"><div><span class="form-element-title">Date Field</span> (<span class="form-element-type">date</span>)</div><div class="form-element-field-description">Date Field</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="datetime"><div><span class="form-element-title">Datetime Field</span> (<span class="form-element-type">datetime</span>)</div><div class="form-element-field-description">Datetime Field based on <a href="http://eonasdan.github.io/bootstrap-datetimepicker/">Bootstrap DateTime Picker</a>.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="editor"><div><span class="form-element-title">Editor</span> (<span class="form-element-type">editor</span>)</div><div class="form-element-field-description">Editor</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="email"><div><span class="form-element-title">Email Field</span> (<span class="form-element-type">email</span>)</div><div class="form-element-field-description">Email Field.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="array" data-field-type="grid"><div><span class="form-element-title">Grid Field</span> (<span class="form-element-type">grid</span>)</div><div class="form-element-field-description">Renders array items into a grid</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="image"><div><span class="form-element-title">Image Field</span> (<span class="form-element-type">image</span>)</div><div class="form-element-field-description">Image Field.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="integer" data-field-type="integer"><div><span class="form-element-title">Integer Field</span> (<span class="form-element-type">integer</span>)</div><div class="form-element-field-description">Field for integers.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="ipv4"><div><span class="form-element-title">IP Address Field</span> (<span class="form-element-type">ipv4</span>)</div><div class="form-element-field-description">IP Address Field.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="json"><div><span class="form-element-title">JSON Editor</span> (<span class="form-element-type">json</span>)</div><div class="form-element-field-description">Editor for JSON objects with basic validation and formatting.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="lowercase"><div><span class="form-element-title">Lowercase Text</span> (<span class="form-element-type">lowercase</span>)</div><div class="form-element-field-description">Text field for lowercase text.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="object" data-field-type="map"><div><span class="form-element-title">Map Field</span> (<span class="form-element-type">map</span>)</div><div class="form-element-field-description">Field for objects with key/value pairs that share the same schema for values.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="markdown"><div><span class="form-element-title">Markdown Editor</span> (<span class="form-element-type">markdown</span>)</div><div class="form-element-field-description">Provides an instance of a Markdown Editor control for use in editing HTML.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="any" data-field-type="optiontree"><div><span class="form-element-title">Option Tree</span> (<span class="form-element-type">optiontree</span>)</div><div class="form-element-field-description">Option Tree</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="password"><div><span class="form-element-title">Password Field</span> (<span class="form-element-type">password</span>)</div><div class="form-element-field-description">Password Field.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="personalname"><div><span class="form-element-title">Personal Name</span> (<span class="form-element-type">personalname</span>)</div><div class="form-element-field-description">Text Field for personal name with capital letter for first letter &amp; after hyphen, space or apostrophe.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="phone"><div><span class="form-element-title">Phone Field</span> (<span class="form-element-type">phone</span>)</div><div class="form-element-field-description">Phone Field.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="pickacolor"><div><span class="form-element-title">Pick-A-Color Field</span> (<span class="form-element-type">pickacolor</span>)</div><div class="form-element-field-description">A color picker for selecting hexadecimal color values</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="search"><div><span class="form-element-title">Search Field</span> (<span class="form-element-type">search</span>)</div><div class="form-element-field-description">A search box field</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="undefined" data-field-type="state"><div><span class="form-element-title">State Field</span> (<span class="form-element-type">state</span>)</div><div class="form-element-field-description">Provides a dropdown selector of states and/or territories in the United States, keyed by their two-character code.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="summernote"><div><span class="form-element-title">Summernote Editor</span> (<span class="form-element-type">summernote</span>)</div><div class="form-element-field-description">Provides an instance of a Summernote Editor control for use in editing HTML.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="array" data-field-type="table"><div><span class="form-element-title">Table Field</span> (<span class="form-element-type">table</span>)</div><div class="form-element-field-description">Renders array items into a table</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="object" data-field-type="tablerow"><div><span class="form-element-title">Table Row Field</span> (<span class="form-element-type">tablerow</span>)</div><div class="form-element-field-description">Renders object items into a table row</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="tag"><div><span class="form-element-title">Tag Field</span> (<span class="form-element-type">tag</span>)</div><div class="form-element-field-description">Text field for entering list of tags separated by delimiter.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="time"><div><span class="form-element-title">Time Field</span> (<span class="form-element-type">time</span>)</div><div class="form-element-field-description">Time Field</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="tinymce"><div><span class="form-element-title">TinyMCE Editor</span> (<span class="form-element-type">tinymce</span>)</div><div class="form-element-field-description">Provides an instance of a TinyMCE control for use in editing HTML.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="token"><div><span class="form-element-title">Token Field</span> (<span class="form-element-type">token</span>)</div><div class="form-element-field-description">Token field for entering list of tokens separated by delimiter.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="array" data-field-type="upload"><div><span class="form-element-title">Upload Field</span> (<span class="form-element-type">upload</span>)</div><div class="form-element-field-description">Provides an upload field with support for thumbnail preview</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="uppercase"><div><span class="form-element-title">Uppercase Text</span> (<span class="form-element-type">uppercase</span>)</div><div class="form-element-field-description">Text field for uppercase text.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="url"><div><span class="form-element-title">URL Field</span> (<span class="form-element-type">url</span>)</div><div class="form-element-field-description">Provides a text control with validation for an internet web address.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="zipcode"><div><span class="form-element-title">Zipcode Field</span> (<span class="form-element-type">zipcode</span>)</div><div class="form-element-field-description">Provides a five or nine-digital US zipcode control with validation.</div></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="view">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="viewDiv"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="code">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="codeDiv" class=" ace_editor ace-tm"><textarea class="ace_text-input" wrap="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="opacity: 0;"></textarea><div class="ace_gutter"><div class="ace_layer ace_gutter-layer ace_folding-enabled"></div><div class="ace_gutter-active-line"></div></div><div class="ace_scroller"><div class="ace_content"><div class="ace_layer ace_print-margin-layer"><div class="ace_print-margin" style="left: 4px; visibility: hidden;"></div></div><div class="ace_layer ace_marker-layer"></div><div class="ace_layer ace_text-layer" style="padding: 0px 4px;"></div><div class="ace_layer ace_marker-layer"></div><div class="ace_layer ace_cursor-layer ace_hidden-cursors"><div class="ace_cursor"></div></div></div></div><div class="ace_scrollbar ace_scrollbar-v" style="display: none; width: 22px;"><div class="ace_scrollbar-inner" style="width: 22px;"></div></div><div class="ace_scrollbar ace_scrollbar-h" style="display: none; height: 22px;"><div class="ace_scrollbar-inner" style="height: 22px;"></div></div><div style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; font: inherit; overflow: hidden;"><div style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; font: inherit; overflow: visible;"></div><div style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; font: inherit; overflow: visible;">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div></div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="loadsave">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <button class="btn btn-default load-button">Load Form</button>
+                                    <br>
+                                    <br>
+                                    <button class="btn btn-default save-button">Save Form</button>
+                                    <br>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+
+</body></html>
