@@ -25,50 +25,13 @@ var setup = function()
     var schema = {
         "type": "object",
         "properties": {
-            "email": {
-                "type": "string",
-                "required": false
-            },
-            "password": {
-                "type": "string",
-                "required": false,
-                "pattern": {}
-            },
-            "file": {
-                "type": "string",
-                "required": false
-            },
-            "check": {
-                "type": "boolean",
-                "required": false,
-                "default": true
-            }
         }
     };
     var options = {
         "fields": {
-            "email": {
-                "type": "text",
-                "label": "Email Address"
-            },
-            "password": {
-                "type": "password",
-                "label": "Password"
-            },
-            "file": {
-                "type": "file",
-                "label": "File Upload"
-            },
-            "check": {
-                "type": "checkbox",
-                "rightLabel": "Sign me up for the News Letter!",
-                "label": "Newsletter"
-            }
         }
     };
     var data = {
-        "email": "Joe Smith",
-        "password": "MyPassword"
     };
 
     var setupEditor = function(id, json)
@@ -818,6 +781,8 @@ var setup = function()
         }
     });
 
+    refreshDesigner();
+
 
     $(".tab-item-source").click(function() {
 
@@ -1018,7 +983,7 @@ var setup = function()
         });
     };
 
-    $(".tab-item-source").click();
+    $(".tab-item-designer").click();
 
 
     // load button
@@ -1098,4 +1063,5 @@ $(document).ready(function() {
     setTimeout(function() {
         setup();
     }, 200);
+    
 });
