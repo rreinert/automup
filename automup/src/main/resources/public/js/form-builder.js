@@ -1,3 +1,8 @@
+var editor1;
+var editor2;
+var editor3;
+var editor4;
+
 var setup = function()
 {
     //Alpaca.logLevel = Alpaca.DEBUG;
@@ -64,10 +69,10 @@ var setup = function()
         return editor;
     };
 
-    var editor1 = setupEditor("schema", schema);
-    var editor2 = setupEditor("options", options);
-    var editor3 = setupEditor("data", data);
-    var editor4 = setupEditor("codeDiv");
+    editor1 = setupEditor("schema", schema);
+    editor2 = setupEditor("options", options);
+    editor3 = setupEditor("data", data);
+    editor4 = setupEditor("codeDiv");
 
     var mainViewField = null;
     var mainPreviewField = null;
@@ -153,13 +158,13 @@ var setup = function()
                         var interaction = $("<div class='interaction'></div>");
                         var buttonGroup = $("<div class='btn-group pull-right'></div>");
                         //var schemaButton = $("<button class='btn button-schema' alpaca-ref-id='" + alpacaFieldId + "'>Schema</button>");
-                        var schemaButton = $('<button class="btn btn-default btn-xs button-schema" alpaca-ref-id="' + alpacaFieldId + '"><i class="glyphicon glyphicon-list"></i></button>');
+                        var schemaButton = $('<button class="btn btn-default btn-xs button-schema" alpaca-ref-id="' + alpacaFieldId + '"><i class="nav-icon fas fa-list-ul"></i></button>');
                         buttonGroup.append(schemaButton);
                         //var optionsButton = $("<button class='btn button-options' alpaca-ref-id='" + alpacaFieldId + "'>Options</button>");
-                        var optionsButton = $('<button class="btn btn-default btn-xs button-options" alpaca-ref-id="' + alpacaFieldId + '"><i class="glyphicon glyphicon-wrench"></i></button>');
+                        var optionsButton = $('<button class="btn btn-default btn-xs button-options" alpaca-ref-id="' + alpacaFieldId + '"><i class="nav-icon fas fa-wrench"></i></button>');
                         buttonGroup.append(optionsButton);
                         //var removeButton = $("<button class='btn btn-danger button-remove' alpaca-ref-id='" + alpacaFieldId + "'>Delete</button>");
-                        var removeButton = $('<button class="btn btn-danger btn-xs button-remove" alpaca-ref-id="' + alpacaFieldId + '"><i class="glyphicon glyphicon-remove"></i></button>');
+                        var removeButton = $('<button class="btn btn-danger btn-xs button-remove" alpaca-ref-id="' + alpacaFieldId + '"><i class="nav-icon fas fa-remove"></i></button>');
                         buttonGroup.append(removeButton);
                         interaction.append(buttonGroup);
                         interaction.append("<div style='clear:both'></div>");
@@ -783,7 +788,6 @@ var setup = function()
 
     refreshDesigner();
 
-
     $(".tab-item-source").click(function() {
 
         // we have to monkey around a bit with ACE Editor to get it to refresh
@@ -985,76 +989,75 @@ var setup = function()
 
     $(".tab-item-designer").click();
 
+    // new button
+    $("#new-button").on("click", function() {
+    	$('#formId').val('');
+    	$('#formName').val('');
 
-    // load button
-    $(".load-button").off().click(function() {
+    	buildForm("");
+    });
 
-        if (!localStorage)
-        {
-            alert("Your browser must support HTML5 local storage in order to use this feature");
-            return;
-        }
-
-        var configString = localStorage.getItem("alpacaDesignerConfig");
-        if (!configString)
-        {
-            return;
-        }
-
-        try
-        {
-            var config = JSON.parse(configString);
-            if (!config.schema) {
-                config.schema = {};
-            }
-            if (!config.options) {
-                config.options = {};
-            }
-            if (!config.data) {
-                config.data = {};
-            }
-
-            editor1.setValue(JSON.stringify(config.schema, null, "    "));
-            editor2.setValue(JSON.stringify(config.options, null, "    "));
-            editor3.setValue(JSON.stringify(config.data, null, "    "));
-
-            //alert("Your form was loaded from HTML5 local storage");
-        }
-        catch (e)
-        {
-            // bad value
-        }
-
+    // open button
+    $("#open-button").on("click", function() {
+    	
+        $.ajax({
+            url: "/form/list",
+            type: "POST",
+            data: {}
+          }).done(function(forms) {
+          	
+  			loadForms(forms);        		
+          	
+          	$('#openPopup').modal('show');
+          	
+          }).fail(function() {
+//           	result.setValue("Failed to open form.");
+          }).always(function() {
+          });
     });
 
     // save button
-    $(".save-button").off().click(function() {
+    $("#save-button").on("click", function() {
 
-        if (!localStorage)
-        {
-            alert("Your browser must support HTML5 local storage in order to use this feature");
-            return;
-        }
+    	var formId = $('#formId').val();
 
-        var config = {};
-        if (schema)
-        {
-            config.schema = schema;
-        }
-        if (options)
-        {
-            config.options = options;
-        }
-        if (data)
-        {
-            config.data = data;
-        }
-        var configString = JSON.stringify(config);
+    	if (formId == ""){
+        	$('#savePopup').modal('show');
+    	}else{
+    		saveForm();
+    	}
 
-        localStorage.setItem("alpacaDesignerConfig", configString);
-
-        //alert("Your form was saved in HTML5 local storage");
     });
+    
+    $("#delete-button").on("click", function() {
+   		$.confirm({
+   		    title: 'Atenção',
+   		    icon: 'fa fa-warning',
+   		    theme: 'material',
+   		    confirmButton: 'Sim',
+   		    confirmButtonClass: 'btn-primary',
+   		    cancelButton: 'Não',
+   		    cancelButtonClass: 'btn-dark',
+   		    content: 'Confirma Exclusão?',
+   		    confirm: function(){
+   		    	deleteForm();
+   		    },
+   		    cancel: function(){
+   		    }
+   		});
+      });
+    
+    $("#run-button").on("click", function() {
+    	var formId = $('#formId').val();
+
+    	var getUrl = window.location;
+    	var baseUrl = getUrl .protocol + "//" + getUrl.host;
+    	var url = baseUrl + "/render.html?id=" + formId;
+    	
+    	window.open(url,'_blank');
+    });
+
+    
 };
 
 $(document).ready(function() {
@@ -1065,3 +1068,155 @@ $(document).ready(function() {
     }, 200);
     
 });
+
+function openForm(formId){
+	var getUrl = window.location;
+	var baseUrl = getUrl .protocol + "//" + getUrl.host;
+	var url = baseUrl + "/form/open?id=" + formId;
+	
+	$('#formId').val(formId);
+	
+	buildForm(url);
+}
+
+function loadForms(forms){
+
+	$('#datatable-forms').DataTable({
+		responsive: true,
+		destroy: true,
+		dom: '<"top"f<"right"><"clear">>rt<"bottom"ip<"clear">>',
+		select:true,
+		data: forms.result,
+		pageLength: 10,
+		pagingType: "full",
+		columns: [
+				{ data: "id" },
+				{ data: "name" }
+		],
+		order: [[0, 'asc']],
+        deferRender: true
+	});
+}
+
+function selectForm(id){
+	$('#openPopup').modal('hide');
+	openForm(id);
+}
+
+function setNameAndSaveForm(){
+	var newName = $('#newFormName').val();
+	$('#formName').val(newName);
+	$('#savePopup').modal('hide');
+	saveForm();
+}
+
+function saveForm(){
+	var formId = $('#formId').val();
+	var formName = $('#formName').val();
+	
+    var config = {};
+    if (schema)
+    {
+        config.schema = schema;
+    }
+    if (options)
+    {
+        config.options = options;
+    }
+    if (data)
+    {
+        config.data = data;
+    }
+    var configString = JSON.stringify(config);
+
+	$.blockUI();
+    $.ajax({
+      url: "/form/save",
+      type: "POST",
+      data: { content: configString,
+    	  id: formId,
+    	  name: formName
+      }
+    }).done(function(data) {
+    	$('#formId').val(data);
+    	
+    }).fail(function() {
+//     	result.setValue("Failed to save script.");
+    }).always(function() {
+      $.unblockUI();
+    });
+}
+
+function deleteForm(){
+	var formId = $('#formId').val();
+	
+    $.blockUI();
+    $.ajax({
+      url: "/form/delete",
+      type: "POST",
+      data: { id: formId }
+    }).done(function(data) {
+    	$('#formId').val('');
+    	$('#formName').val('');
+    	
+    	buildForm("");
+    	
+    }).fail(function() {
+//     	result.setValue("Failed to delete form.");
+    }).always(function() {
+      $.unblockUI();
+    });
+}
+
+function buildForm(configString){
+
+    try
+    {
+    	var config = {};
+	
+	    if (!configString) {
+	    	
+	    	config.schema = {
+	                "type": "object",
+	                "properties": {
+	                }
+	            };
+	    	config.options = {
+	                "fields": {
+	                }
+	            };
+	    	config.data = {};
+	    	
+	        editor1.setValue(JSON.stringify(config.schema, null, "    "));
+	        editor2.setValue(JSON.stringify(config.options, null, "    "));
+	        editor3.setValue(JSON.stringify(config.data, null, "    "));
+
+	    }else{
+	        config = JSON.parse(configString);
+
+	        if (!config.schema) {
+	            config.schema = {};
+	        }
+	        if (!config.options) {
+	            config.options = {};
+	        }
+	        if (!config.data) {
+	            config.data = {};
+	        }
+
+	        editor1.setValue(JSON.stringify(config.schema, null, "    "));
+	        editor2.setValue(JSON.stringify(config.options, null, "    "));
+	        editor3.setValue(JSON.stringify(config.data, null, "    "));
+	    
+	    }
+    }
+    catch (e)
+    {
+    	console.log(e);
+        // bad value
+    }
+    
+    $(".tab-item-designer").click();
+    $(".tab-item-code").click();    
+	
+}

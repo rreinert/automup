@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Alpaca Form Builder</title>
+        <title>Form Builder</title>
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -18,7 +18,6 @@
         <!-- Alpaca -->
         <script type="text/javascript" src="js/alpaca.js"></script>
         <link type="text/css" href="css/alpaca.css" rel="stylesheet">
-
 
         <!-- Beautify (used by EditorField) -->
         <script src="js/beautify.js" type="text/javascript" charset="utf-8"></script>
@@ -76,10 +75,35 @@
         <script type="text/javascript" src="js/form-builder.js"></script>
         <link type="text/css" href="css/form-builder.css" rel="stylesheet">
 
-    <script src="js/mode-json.js"></script><script src="js/mode-javascript.js"></script></head>
+    	<script src="js/mode-json.js"></script><script src="js/mode-javascript.js"></script>
+    	
+    	<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    </head>
+    
     <body data-spy="scroll" data-target=".demo-nav">
-
+    
         <div style="margin:15px; margin-top:0px;">
+
+			<div class="row">
+	        
+		        <div class="col-lg-12">
+					<div class="input-code-title">
+					  <button id="new-button" type="button"> <i class="nav-icon fas fa-file"></i> New</button>
+					  <button id="open-button" type="button"> <i class="nav-icon fas fa-folder-open"></i> Open</button>
+					  <button id="save-button" type="button"> <i class="nav-icon fas fa-save"></i> Save</button>
+					  <button id="delete-button" type="button"> <i class="nav-icon fas fa-trash"></i> Delete</button>
+					  <button id="run-button" type="button"> <i class="nav-icon fas fa-play"></i> Run</button>
+					</div>
+	
+				    <form>
+		   				<input type="hidden" id="formId"/>
+						<input type="hidden" id="formName"/>
+				    </form>
+		        </div>
+	        
+	        </div>
 
             <div class="row">
                 <div class="col-md-12">
@@ -107,10 +131,14 @@
                                                 </ul>
                                             </div>
                                             <div class="tab-content">
-                                                <div class="tab-pane active" id="types"><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string"><div><span class="form-element-title">String</span> (<span class="form-element-type">string</span>)</div><div class="form-element-field-description">A textual property</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="number"><div><span class="form-element-title">Number</span> (<span class="form-element-type">number</span>)</div><div class="form-element-field-description">A numerical property</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="boolean"><div><span class="form-element-title">Boolean</span> (<span class="form-element-type">boolean</span>)</div><div class="form-element-field-description">A true/false property</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="object"><div><span class="form-element-title">Object</span> (<span class="form-element-type">object</span>)</div><div class="form-element-field-description">A collection of keyed sub-properties</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="array"><div><span class="form-element-title">Array</span> (<span class="form-element-type">array</span>)</div><div class="form-element-field-description">An array of sub-properties</div></div></div>
-                                                <div class="tab-pane" id="basic"><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="text"><div><span class="form-element-title">Single-Line Text</span> (<span class="form-element-type">text</span>)</div><div class="form-element-field-description">Text field for single-line text.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="textarea"><div><span class="form-element-title">Multi-Line Text</span> (<span class="form-element-type">textarea</span>)</div><div class="form-element-field-description">Textarea field for multiple line text.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="file"><div><span class="form-element-title">File Field</span> (<span class="form-element-type">file</span>)</div><div class="form-element-field-description">Field for uploading files.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="number" data-field-type="number"><div><span class="form-element-title">Number Field</span> (<span class="form-element-type">number</span>)</div><div class="form-element-field-description">Field for float numbers.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="array" data-field-type="array"><div><span class="form-element-title">Array Field</span> (<span class="form-element-type">array</span>)</div><div class="form-element-field-description">Field for list of items with same data type or structure.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="object" data-field-type="object"><div><span class="form-element-title">Object Field</span> (<span class="form-element-type">object</span>)</div><div class="form-element-field-description">Object field for containing other fields</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="any" data-field-type="any"><div><span class="form-element-title">Any Field</span> (<span class="form-element-type">any</span>)</div><div class="form-element-field-description">Any field.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="hidden"><div><span class="form-element-title">Hidden</span> (<span class="form-element-type">hidden</span>)</div><div class="form-element-field-description">Field for a hidden HTML input</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="boolean" data-field-type="checkbox"><div><span class="form-element-title">Checkbox Field</span> (<span class="form-element-type">checkbox</span>)</div><div class="form-element-field-description">Checkbox Field for boolean (true/false), string ('true', 'false' or comma-delimited string of values) or data array.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="undefined" data-field-type="radio"><div><span class="form-element-title">Radio Group Field</span> (<span class="form-element-type">radio</span>)</div><div class="form-element-field-description">Radio Group Field with list of options.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="undefined" data-field-type="select"><div><span class="form-element-title">Select Field</span> (<span class="form-element-type">select</span>)</div><div class="form-element-field-description">Select Field</div></div></div>
-                                                <div class="tab-pane" id="advanced"><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="undefined" data-field-type="chooser"><div><span class="form-element-title">Chooser Field</span> (<span class="form-element-type">chooser</span>)</div><div class="form-element-field-description">Chooser Field</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="any" data-field-type="address"><div><span class="form-element-title">Address</span> (<span class="form-element-type">address</span>)</div><div class="form-element-field-description">Standard US Address with Street, City, State and Zip. Also comes with support for Google map.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="ckeditor"><div><span class="form-element-title">CK Editor</span> (<span class="form-element-type">ckeditor</span>)</div><div class="form-element-field-description">Provides an instance of a CK Editor control for use in editing HTML.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="color"><div><span class="form-element-title">Color Field</span> (<span class="form-element-type">color</span>)</div><div class="form-element-field-description">A color picker for selecting hexadecimal color values</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="colorpicker"><div><span class="form-element-title">Color Picker Field</span> (<span class="form-element-type">colorpicker</span>)</div><div class="form-element-field-description">A color picker for selecting hexadecimal color values</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="undefined" data-field-type="country"><div><span class="form-element-title">Country Field</span> (<span class="form-element-type">country</span>)</div><div class="form-element-field-description">Provides a dropdown selector of countries keyed by their ISO3 code.  The names of the countries are read from the I18N bundle for the current locale.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="undefined" data-field-type="countryCallingCode"><div><span class="form-element-title">Country Calling Code Field</span> (<span class="form-element-type">countryCallingCode</span>)</div><div class="form-element-field-description">Provides a dropdown selector of country dialing codes.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="currency"><div><span class="form-element-title">Currency Field</span> (<span class="form-element-type">currency</span>)</div><div class="form-element-field-description">Provides an automatically formatted and configurable input for entering currency amounts.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="date"><div><span class="form-element-title">Date Field</span> (<span class="form-element-type">date</span>)</div><div class="form-element-field-description">Date Field</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="datetime"><div><span class="form-element-title">Datetime Field</span> (<span class="form-element-type">datetime</span>)</div><div class="form-element-field-description">Datetime Field based on <a href="http://eonasdan.github.io/bootstrap-datetimepicker/">Bootstrap DateTime Picker</a>.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="editor"><div><span class="form-element-title">Editor</span> (<span class="form-element-type">editor</span>)</div><div class="form-element-field-description">Editor</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="email"><div><span class="form-element-title">Email Field</span> (<span class="form-element-type">email</span>)</div><div class="form-element-field-description">Email Field.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="array" data-field-type="grid"><div><span class="form-element-title">Grid Field</span> (<span class="form-element-type">grid</span>)</div><div class="form-element-field-description">Renders array items into a grid</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="image"><div><span class="form-element-title">Image Field</span> (<span class="form-element-type">image</span>)</div><div class="form-element-field-description">Image Field.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="integer" data-field-type="integer"><div><span class="form-element-title">Integer Field</span> (<span class="form-element-type">integer</span>)</div><div class="form-element-field-description">Field for integers.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="ipv4"><div><span class="form-element-title">IP Address Field</span> (<span class="form-element-type">ipv4</span>)</div><div class="form-element-field-description">IP Address Field.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="json"><div><span class="form-element-title">JSON Editor</span> (<span class="form-element-type">json</span>)</div><div class="form-element-field-description">Editor for JSON objects with basic validation and formatting.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="lowercase"><div><span class="form-element-title">Lowercase Text</span> (<span class="form-element-type">lowercase</span>)</div><div class="form-element-field-description">Text field for lowercase text.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="object" data-field-type="map"><div><span class="form-element-title">Map Field</span> (<span class="form-element-type">map</span>)</div><div class="form-element-field-description">Field for objects with key/value pairs that share the same schema for values.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="markdown"><div><span class="form-element-title">Markdown Editor</span> (<span class="form-element-type">markdown</span>)</div><div class="form-element-field-description">Provides an instance of a Markdown Editor control for use in editing HTML.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="any" data-field-type="optiontree"><div><span class="form-element-title">Option Tree</span> (<span class="form-element-type">optiontree</span>)</div><div class="form-element-field-description">Option Tree</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="password"><div><span class="form-element-title">Password Field</span> (<span class="form-element-type">password</span>)</div><div class="form-element-field-description">Password Field.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="personalname"><div><span class="form-element-title">Personal Name</span> (<span class="form-element-type">personalname</span>)</div><div class="form-element-field-description">Text Field for personal name with capital letter for first letter &amp; after hyphen, space or apostrophe.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="phone"><div><span class="form-element-title">Phone Field</span> (<span class="form-element-type">phone</span>)</div><div class="form-element-field-description">Phone Field.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="pickacolor"><div><span class="form-element-title">Pick-A-Color Field</span> (<span class="form-element-type">pickacolor</span>)</div><div class="form-element-field-description">A color picker for selecting hexadecimal color values</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="search"><div><span class="form-element-title">Search Field</span> (<span class="form-element-type">search</span>)</div><div class="form-element-field-description">A search box field</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="undefined" data-field-type="state"><div><span class="form-element-title">State Field</span> (<span class="form-element-type">state</span>)</div><div class="form-element-field-description">Provides a dropdown selector of states and/or territories in the United States, keyed by their two-character code.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="summernote"><div><span class="form-element-title">Summernote Editor</span> (<span class="form-element-type">summernote</span>)</div><div class="form-element-field-description">Provides an instance of a Summernote Editor control for use in editing HTML.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="array" data-field-type="table"><div><span class="form-element-title">Table Field</span> (<span class="form-element-type">table</span>)</div><div class="form-element-field-description">Renders array items into a table</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="object" data-field-type="tablerow"><div><span class="form-element-title">Table Row Field</span> (<span class="form-element-type">tablerow</span>)</div><div class="form-element-field-description">Renders object items into a table row</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="tag"><div><span class="form-element-title">Tag Field</span> (<span class="form-element-type">tag</span>)</div><div class="form-element-field-description">Text field for entering list of tags separated by delimiter.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="time"><div><span class="form-element-title">Time Field</span> (<span class="form-element-type">time</span>)</div><div class="form-element-field-description">Time Field</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="tinymce"><div><span class="form-element-title">TinyMCE Editor</span> (<span class="form-element-type">tinymce</span>)</div><div class="form-element-field-description">Provides an instance of a TinyMCE control for use in editing HTML.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="token"><div><span class="form-element-title">Token Field</span> (<span class="form-element-type">token</span>)</div><div class="form-element-field-description">Token field for entering list of tokens separated by delimiter.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="array" data-field-type="upload"><div><span class="form-element-title">Upload Field</span> (<span class="form-element-type">upload</span>)</div><div class="form-element-field-description">Provides an upload field with support for thumbnail preview</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="uppercase"><div><span class="form-element-title">Uppercase Text</span> (<span class="form-element-type">uppercase</span>)</div><div class="form-element-field-description">Text field for uppercase text.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="url"><div><span class="form-element-title">URL Field</span> (<span class="form-element-type">url</span>)</div><div class="form-element-field-description">Provides a text control with validation for an internet web address.</div></div><div class="form-element draggable ui-widget-content ui-draggable ui-draggable-handle" data-type="string" data-field-type="zipcode"><div><span class="form-element-title">Zipcode Field</span> (<span class="form-element-type">zipcode</span>)</div><div class="form-element-field-description">Provides a five or nine-digital US zipcode control with validation.</div></div></div>
-                                            </div>
+											</div>
+											<div class="tab-pane active" id="types">
+											</div>
+											<div class="tab-pane" id="basic">
+											</div>
+											<div class="tab-pane" id="advanced">
+											</div>
+										</div>
                                         </div>
                                     </div>
                                 </div>
@@ -127,7 +155,7 @@
                         
 						<div class="tab-pane" id="source">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div>
                                         <ul class="nav nav-tabs">
                                             <li class="active"><a href="#schema" data-toggle="tab" class="tab-source-schema">Schema</a></li>
@@ -141,7 +169,7 @@
                                         <div class="tab-pane ace_editor ace-tm" id="data"><textarea class="ace_text-input" wrap="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="opacity: 0;"></textarea><div class="ace_gutter"><div class="ace_layer ace_gutter-layer ace_folding-enabled"></div><div class="ace_gutter-active-line"></div></div><div class="ace_scroller"><div class="ace_content"><div class="ace_layer ace_print-margin-layer"><div class="ace_print-margin" style="left: 4px; visibility: hidden;"></div></div><div class="ace_layer ace_marker-layer"></div><div class="ace_layer ace_text-layer" style="padding: 0px 4px;"></div><div class="ace_layer ace_marker-layer"></div><div class="ace_layer ace_cursor-layer ace_hidden-cursors"><div class="ace_cursor"></div></div></div></div><div class="ace_scrollbar ace_scrollbar-v" style="display: none; width: 22px;"><div class="ace_scrollbar-inner" style="width: 22px;"></div></div><div class="ace_scrollbar ace_scrollbar-h" style="display: none; height: 22px;"><div class="ace_scrollbar-inner" style="height: 22px;"></div></div><div style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; font: inherit; overflow: hidden;"><div style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; font: inherit; overflow: visible;"></div><div style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; font: inherit; overflow: visible;">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div></div></div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6" style="display: none;">
                                     <div>
                                         <ul class="nav nav-tabs">
                                             <li class="active"><a href="#preview" data-toggle="tab">Preview</a></li>
@@ -178,13 +206,6 @@
                         <div class="tab-pane" id="loadsave">
                             <div class="row">
                                 <div class="col-md-12">
-
-                                    <button class="btn btn-default load-button">Load Form</button>
-                                    <br>
-                                    <br>
-                                    <button class="btn btn-default save-button">Save Form</button>
-                                    <br>
-
                                 </div>
                             </div>
                         </div>
@@ -192,6 +213,65 @@
                 </div>
             </div>
         </div>
-    
 
-</body></html>
+<div id="openPopup" class="modal fade" tabindex="-1" style="display: none;">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+	        </button>
+	        <h4 class="modal-title" id="myModalLabel">Scripts</h4>
+	      </div>
+	      <div class="modal-body">
+				<div>
+					<label class="col-form-label col-md-2 col-sm-3 col-xs-12 " for="company">Nome</label>
+					<input type="text" id="formName" class="col-md-9 adjust-field-mobile" />
+				</div>
+				<div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer" >
+				
+					<table id="datatable-forms" class="table table-striped table-bordered" >
+					<thead class="thead">
+					  <tr>
+						<th style="width: 10%">Id</th>
+						<th style="width: 90%">Nome</th>
+					  </tr>
+					</thead>
+					</table>
+				</div> 
+	      </div>
+
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+	      </div>
+	
+	    </div>
+	  </div>      
+  </div>
+  
+  <div id="savePopup" class="modal fade" tabindex="-1" style="display: none;">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+	        </button>
+	        <h4 class="modal-title" id="myModalLabel">Salvar Form</h4>
+	      </div>
+	      <div class="modal-body">
+				<div>
+					<label class="col-form-label col-md-2 col-sm-3 col-xs-12 " for="company">Nome:</label>
+					<input type="text" id="newFormName" class="col-md-9 adjust-field-mobile" />
+				</div>
+	      </div>
+
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" onclick="setNameAndSaveForm();">OK</button>
+	      </div>
+	
+	    </div>
+	  </div>      
+  </div>  
+
+</body>
+</html>
