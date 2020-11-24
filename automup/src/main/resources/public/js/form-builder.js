@@ -1070,13 +1070,25 @@ $(document).ready(function() {
 });
 
 function openForm(formId){
-	var getUrl = window.location;
-	var baseUrl = getUrl .protocol + "//" + getUrl.host;
-	var url = baseUrl + "/form/open?id=" + formId;
+//	var getUrl = window.location;
+//	var baseUrl = getUrl .protocol + "//" + getUrl.host;
+//	var url = baseUrl + "/form/open?id=" + formId;
 	
 	$('#formId').val(formId);
+
+    $.ajax({
+        url: "/form/open",
+        type: "POST",
+        data: {id: formId}
+      }).done(function(content) {
+      	
+    	  buildForm(content);      	
+      	
+      }).fail(function() {
+//       	result.setValue("Failed to open form.");
+      }).always(function() {
+      });
 	
-	buildForm(url);
 }
 
 function loadForms(forms){
@@ -1114,37 +1126,69 @@ function saveForm(){
 	var formId = $('#formId').val();
 	var formName = $('#formName').val();
 	
-    var config = {};
+    try
+    {
+        schema = JSON.parse(editor1.getValue());
+    }
+    catch (e)
+    {
+    }
+
+    try
+    {
+        options = JSON.parse(editor2.getValue());
+    }
+    catch (e)
+    {
+    }
+
+    try
+    {
+        data = JSON.parse(editor3.getValue());
+    }
+    catch (e)
+    {
+    }
+
     if (schema)
     {
-        config.schema = schema;
-    }
-    if (options)
-    {
-        config.options = options;
-    }
-    if (data)
-    {
-        config.data = data;
-    }
-    var configString = JSON.stringify(config);
+        var config = {
+            "schema": schema
+        };
+        if (options)
+        {
+            config.options = options;
+        }
+        if (data)
+        {
+            config.data = data;
+        }
+        if (!config.options) {
+            config.options = {};
+        }
+        
+        var code =  JSON.stringify(config, null, "    ");
 
-	$.blockUI();
-    $.ajax({
-      url: "/form/save",
-      type: "POST",
-      data: { content: configString,
-    	  id: formId,
-    	  name: formName
-      }
-    }).done(function(data) {
-    	$('#formId').val(data);
-    	
-    }).fail(function() {
-//     	result.setValue("Failed to save script.");
-    }).always(function() {
-      $.unblockUI();
-    });
+    	$.blockUI();
+        $.ajax({
+          url: "/form/save",
+          type: "POST",
+          data: { content: code,
+        	  id: formId,
+        	  name: formName
+          }
+        }).done(function(data) {
+        	$('#formId').val(data);
+        	
+        }).fail(function() {
+//         	result.setValue("Failed to save script.");
+        }).always(function() {
+          $.unblockUI();
+        });
+
+        
+    }
+    
 }
 
 function deleteForm(){
