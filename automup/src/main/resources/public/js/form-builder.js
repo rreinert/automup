@@ -1169,6 +1169,8 @@ function saveForm(){
         
         var code =  JSON.stringify(config, null, "    ");
 
+        code = code.replace(/[\n\r]/g, '');
+        
     	$.blockUI();
         $.ajax({
           url: "/form/save",
