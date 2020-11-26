@@ -39,9 +39,33 @@ public class ScriptService {
         context.getBindings("js").putMember("database", jdbcTemplate);
         context.getBindings("js").putMember("request", request);
         
-        runJavaScript("function add(num){return num +20;}", context);
         runJavaScript(code, context);
         
+    }
+    
+    @Transactional
+    public Script createFormScript(@RequestParam String formName) {
+
+    	String scriptName = "script_" + formName;
+        Script ret = new Script();
+    	ret.setName(scriptName);
+    	ret.setCode("");
+    	ret = scriptRepository.save(ret);
+		
+        return ret;
+    }
+    
+    public Script getFormScript(String formName) {
+    	Script ret = null;
+    	
+    	String scriptName = "script_" + formName;
+    	List<Script> scripts = scriptRepository.findByName(scriptName);
+    	
+    	if ((scripts != null) && (scripts.size()>0)){
+    		ret = scripts.get(0);
+    	}
+    	
+    	return ret;
     }
     
     public static Value runJavaScript(String script, Context context) {

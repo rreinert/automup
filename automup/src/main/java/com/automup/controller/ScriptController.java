@@ -83,6 +83,10 @@ public class ScriptController implements ApplicationContextAware {
             	code = script.getCode();
             }
             
+            if (code == null) {
+            	code = "";
+            }
+            
             System.setOut(previousConsole);
             
             return RestResult.create(code, out.toString());

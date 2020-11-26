@@ -69,6 +69,11 @@ public class FormController {
         if (StringUtils.isEmpty(id)) {
             f = new Form();
             f.setName(name);
+            
+            Script script = scriptService.getFormScript(name);
+            if (script == null) {
+            	scriptService.createFormScript(name);
+            }
         }else {
             Long formId = Long.valueOf(id);
             Optional<Form> formFound = formRepository.findById(formId);
@@ -109,10 +114,16 @@ public class FormController {
 	
 	@RequestMapping(value = "/submit", method = {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody String submit(HttpServletRequest request) {
-
-//		System.out.println(request.getParameter("submission[data][password]"));
-    	
-		scriptService.run("test", request);
+		
+		String id = request.getParameter("id");
+		
+        Long formId = Long.valueOf(id);
+        Optional<Form> f = formRepository.findById(formId);
+		Form form = f.get();
+		
+		String scriptName = "script_" +  form.getName();
+		
+		scriptService.run(scriptName, request);
 		
     	return "";
     }

@@ -12,11 +12,16 @@
         <link type="text/css" href="css/bootstrap-theme.css" rel="stylesheet">
         <script type="text/javascript" src="js/bootstrap.js"></script>
 
+		<!-- Confirm -->
+		<link rel="stylesheet" href="plugins/jquery-confirm/jquery-confirm.min.css">
+		<script src="plugins/jquery-confirm/jquery-confirm.min.js"></script>
+
         <!-- Handlebars -->
         <script type="text/javascript" src="js/handlebars.min.js"></script>
 
         <!-- Alpaca -->
-        <script type="text/javascript" src="js/alpaca.js"></script>
+<!--         <script type="text/javascript" src="js/alpaca.js"></script> -->
+        <script type="text/javascript" src="//cdn.jsdelivr.net/npm/alpaca@1.5.27/dist/alpaca/bootstrap/alpaca.min.js"></script>
         <link type="text/css" href="css/alpaca.css" rel="stylesheet">
 
         <!-- Beautify (used by EditorField) -->
@@ -127,26 +132,27 @@
                                         <div class="col-md-12">
                                             <div>
                                                 <ul class="nav nav-tabs">
-                                                    <li class="active"><a href="#types" data-toggle="tab">Types</a></li>
-                                                    <li><a href="#basic" data-toggle="tab">Basic</a></li>
+                                                    <li class="active"><a href="#basic" data-toggle="tab">Basic</a></li>
                                                     <li><a href="#advanced" data-toggle="tab">Advanced</a></li>
+                                                    <li><a href="#types" data-toggle="tab">Types</a></li>
                                                 </ul>
                                             </div>
                                             <div class="tab-content">
-											<div class="tab-pane active" id="types">
+                                            
+												<div class="tab-pane active" id="basic">
+												</div>
+												<div class="tab-pane" id="advanced">
+												</div>
+												<div class="tab-pane" id="types">
+												</div>												
 											</div>
-											<div class="tab-pane" id="basic">
-											</div>
-											<div class="tab-pane" id="advanced">
-											</div>
-										</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="row">
-                                        <div class="col-md-12">
-                                            <div id="designerDiv"></div>
+                                        <div class="col-md-12" >
+                                            <div id="designerDiv" style="background-color: #f4f6f9; min-height: 500px;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -227,7 +233,7 @@
 	      <div class="modal-body">
 				<div>
 					<label class="col-form-label col-md-2 col-sm-3 col-xs-12 " for="company">Nome</label>
-					<input type="text" id="formName" class="col-md-9 adjust-field-mobile" />
+					<input type="text" id="formNameSearch" class="col-md-9 adjust-field-mobile" />
 				</div>
 				<div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer" >
 				
