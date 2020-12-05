@@ -1222,8 +1222,6 @@ function buildForm(configString){
 	
 	    if (!configString) {
 	    	
-	    	var formId = $('#formId').val();
-	    	
 	    	config.schema = {
 	                "type": "object",
 	                "properties": {
@@ -1235,7 +1233,7 @@ function buildForm(configString){
 	    	                "submit": {}
 	    	            },
 	    	            "attributes":{
-                            "action":"/form/submit?id="+formId,
+                            "action":"/form/submit?id=#formId#",
                             "method":"post"
                         }
 	    	        },

@@ -65,6 +65,7 @@ public class FormController {
 			@RequestParam(name="content") String content) {
 
 		Form f = null;
+		Form saved = null;
 
         if (StringUtils.isEmpty(id)) {
             f = new Form();
@@ -74,6 +75,14 @@ public class FormController {
             if (script == null) {
             	scriptService.createFormScript(name);
             }
+            
+        	saved = formRepository.save(f);
+
+        	content = content.replaceAll("#formId#", saved.getId().toString());
+        	f.setContent(content);
+        	
+        	saved = formRepository.save(f);
+            
         }else {
             Long formId = Long.valueOf(id);
             Optional<Form> formFound = formRepository.findById(formId);
@@ -81,11 +90,12 @@ public class FormController {
             if (formFound != null) {
             	f = formFound.get();
             }
+            
+            content = content.replaceAll("#formId#", id.toString());
+        	f.setContent(content);
+        	
+        	saved = formRepository.save(f);
         }		
-		
-    	f.setContent(content);
-    	
-    	Form saved = formRepository.save(f);
     	
     	return saved.getId().toString();
     }
