@@ -8,6 +8,8 @@ var qtd = database.queryForObject("SELECT COUNT(*) FROM cars", Integer.class);
 print('Cars found = '+qtd);
 
 var cars = database.queryForList("SELECT * FROM cars");
+
+
 print(cars.size());
 
 for (var x =0; x < cars.size(); x++){

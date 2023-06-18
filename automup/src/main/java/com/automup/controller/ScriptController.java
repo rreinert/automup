@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 import org.springframework.beans.BeansException;
@@ -21,9 +25,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.automup.entity.Script;
-import com.automup.entity.RestResult;
-import com.automup.repository.ScriptRepository;
+import com.automup.domain.RestResult;
+import com.automup.domain.SysScript;
+import com.automup.service.ColumnService;
+import com.automup.service.DatabaseService;
+import com.automup.service.MailService;
+import com.automup.service.ProcessService;
+import com.automup.service.RecordService;
+import com.automup.service.ScheduleService;
+import com.automup.service.ScriptService;
+import com.automup.service.TableService;
 
 @Controller
 @RequestMapping("/script")
@@ -32,14 +43,37 @@ public class ScriptController implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 
     @Autowired
-    private ScriptRepository scriptRepository;
+    private ScriptService scriptService;
     
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
+    private RecordService recordService;
+
+    @Autowired
+    private TableService tableService;
+
+    @Autowired
+    private ColumnService columnService;
+
+    @Autowired
+    private DatabaseService databaseService;
+
+    @Autowired
+    private ProcessService processService;
+
+    @Autowired
+    private ScheduleService scheduleService;
+
+	private static final Logger log = LogManager.getLogger(ScriptController.class);
+
     @RequestMapping(method = RequestMethod.GET)
     public String index() {
-        return "redirect:/script/index.html";
+        return "scripts";
     }
     
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
@@ -48,10 +82,10 @@ public class ScriptController implements ApplicationContextAware {
 
     	return CompletableFuture.supplyAsync(() -> {
     		
-    		List<Script> ret = new ArrayList<Script>();
-            Iterable<Script> scripts = scriptRepository.findAll();
-            for (Script script : scripts) {
-				script.setName("<a href='#' onclick='selectScript("+script.getId()+");'>"+script.getName()+"</a>");
+    		List<SysScript> ret = new ArrayList<SysScript>();
+            Iterable<SysScript> scripts = scriptService.findAll();
+            for (SysScript script : scripts) {
+				script.setName("<a href='#' onclick=\"selectScript('"+script.getId()+"');\">"+script.getName()+"</a>");
             	ret.add(script);
 			}
             
@@ -72,14 +106,12 @@ public class ScriptController implements ApplicationContextAware {
     		
             ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-            Long scriptId = Long.valueOf(id);
-            
-            Optional<Script> scriptFound = scriptRepository.findById(scriptId);
+            Optional<SysScript> scriptFound = scriptService.findById(id);
             
             String code = "";
 
             if (scriptFound != null) {
-            	Script script = scriptFound.get();
+            	SysScript script = scriptFound.get();
             	code = script.getCode();
             }
             
@@ -105,14 +137,13 @@ public class ScriptController implements ApplicationContextAware {
             System.setOut(new PrintStream(newConsole));
     		
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            Script s = null;
+            SysScript s = null;
 
             if (StringUtils.isEmpty(id)) {
-                s = new Script();
+                s = new SysScript();
                 s.setName(name);
             }else {
-                Long scriptId = Long.valueOf(id);
-                Optional<Script> scriptFound = scriptRepository.findById(scriptId);
+                Optional<SysScript> scriptFound = scriptService.findById(id);
                 
                 if (scriptFound != null) {
                 	s = scriptFound.get();
@@ -120,7 +151,7 @@ public class ScriptController implements ApplicationContextAware {
             }
             
             s.setCode(script);
-            Script ret = scriptRepository.save(s);
+            SysScript ret = scriptService.save(s);
             
             System.setOut(previousConsole);
             
@@ -141,8 +172,7 @@ public class ScriptController implements ApplicationContextAware {
     		
             ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-            Long scriptId = Long.valueOf(id);
-            scriptRepository.deleteById(scriptId);
+            scriptService.deleteById(id);
             
             System.setOut(previousConsole);
             
@@ -152,7 +182,7 @@ public class ScriptController implements ApplicationContextAware {
 
     @RequestMapping(value = "/run", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public CompletableFuture<RestResult> run(@RequestParam String script) {
+    public CompletableFuture<RestResult> run(HttpServletRequest request, @RequestParam String script) {
 
     	return CompletableFuture.supplyAsync(() -> {
     		
@@ -166,8 +196,23 @@ public class ScriptController implements ApplicationContextAware {
             Context context = Context.newBuilder().allowAllAccess(true).build();
             
             context.getBindings("js").putMember("database", jdbcTemplate);
+            context.getBindings("js").putMember("mailService", mailService);
+            context.getBindings("js").putMember("log", log);
             
-            runJavaScript("function add(num){return num +20;}", context);
+            context.getBindings("js").putMember("database", jdbcTemplate);
+            context.getBindings("js").putMember("request", request);
+            context.getBindings("js").putMember("log", log);
+            context.getBindings("js").putMember("recordService", recordService);
+            context.getBindings("js").putMember("tableService", tableService);
+            context.getBindings("js").putMember("columnService", columnService);
+            context.getBindings("js").putMember("processService", processService);
+            context.getBindings("js").putMember("databaseService", databaseService);
+            context.getBindings("js").putMember("scheduleService", scheduleService);
+            context.getBindings("js").putMember("mailService", mailService);
+            
+//            context.getBindings("js").putMember("scriptRunnable", scriptRunnable);
+//            runJavaScript("function add(num){return num +20;}", context);
+            
             runJavaScript(script, context);
             
             System.setOut(previousConsole);
@@ -184,5 +229,9 @@ public class ScriptController implements ApplicationContextAware {
     private static Value runJavaScript(String script, Context context) {
 	  return context.eval("js", script);
     }
+
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
 
 }

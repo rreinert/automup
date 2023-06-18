@@ -7,12 +7,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.automup.entity.Script;
+import com.automup.domain.SysScript;
 
 @Repository
-public interface ScriptRepository extends CrudRepository<Script, Long>{
+public interface ScriptRepository extends CrudRepository<SysScript, String>{
 	
-	@Query("FROM Script s WHERE s.name LIKE :name")
-	List<Script> findByName(@Param("name") String name);
+	@Query("FROM SysScript s WHERE s.name LIKE :name")
+	List<SysScript> findByName(@Param("name") String name);
 
 }
