@@ -40,6 +40,8 @@ import com.automup.service.TableService;
 @RequestMapping("/script")
 public class ScriptController implements ApplicationContextAware {
 
+	//commit
+	
     private ApplicationContext applicationContext;
 
     @Autowired
