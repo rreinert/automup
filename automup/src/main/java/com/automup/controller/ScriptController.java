@@ -42,6 +42,8 @@ public class ScriptController implements ApplicationContextAware {
 
 	//commit
 	
+	//oi
+	
     private ApplicationContext applicationContext;
 
     @Autowired
